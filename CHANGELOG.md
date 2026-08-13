@@ -24,6 +24,17 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.6.3] - 2026-08-13
+
+Corrects the `repository` URL advertised by every vendor manifest.
+
+- **All four manifests pointed at `riversidefm/riverside-mcp`**, which is
+  private. Any external reader — including a directory reviewer following the
+  link from a listing — resolved it to a 404. They now point at
+  `riversidefm/riverside-mcp-public`, the published entry point that actually
+  serves this bundle.
+- No skill, tool, or MCP wiring changes; packaging metadata only.
+
 ## [0.6.2] - 2026-08-13
 
 Refactors the bundled skills for structural progressive disclosure while

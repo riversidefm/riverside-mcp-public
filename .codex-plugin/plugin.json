@@ -1,13 +1,13 @@
 {
   "name": "riverside",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Riverside podcast and recording platform. Browse recordings, search transcripts, manage content, and publish clips to YouTube, TikTok, and Instagram.",
   "author": {
     "name": "Riverside",
     "url": "https://riverside.com"
   },
   "homepage": "https://riverside.com",
-  "repository": "https://github.com/riversidefm/riverside-mcp",
+  "repository": "https://github.com/riversidefm/riverside-mcp-public",
   "license": "MIT",
   "keywords": [
     "riverside",
