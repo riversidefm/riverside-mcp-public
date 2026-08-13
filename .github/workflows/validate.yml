@@ -1,0 +1,79 @@
+name: Validate plugin
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+          # The release gate diffs against the PR base or pre-push commit, so
+          # the comparison commit has to be in the local history.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22" # @anthropic-ai/claude-code requires Node >=22
+
+      - name: Run validator regression tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Install Claude Code CLI
+        # Pinned to the version validated locally for this release. Bump
+        # deliberately (and re-run `claude plugin validate --strict .`
+        # locally) rather than letting this drift silently.
+        run: npm install -g @anthropic-ai/claude-code@2.1.215
+
+      # --- Manifest shape -------------------------------------------------
+      #
+      # These check packaging metadata. The OpenAI gate also cross-checks the
+      # MCP configs, but none of them opens a SKILL.md body.
+
+      - name: Validate Claude plugin
+        run: claude plugin validate --strict .
+
+      - name: Validate Cursor package
+        run: python3 scripts/validate_cursor_package.py
+
+      - name: Validate OpenAI package
+        run: python3 scripts/validate_openai_package.py
+
+      # --- Shared bundle gates --------------------------------------------
+      #
+      # These gates inspect skill bodies, validate their local reference graph,
+      # and run the dedicated cross-config validation that packaging checks
+      # alone cannot replace.
+
+      - name: Validate skill references
+        run: python3 scripts/validate_skill_references.py
+
+      - name: Validate tool names against the live surface
+        run: python3 scripts/validate_tool_names.py
+
+      - name: Validate MCP configuration
+        run: python3 scripts/validate_mcp_config.py
+
+      - name: Validate Agent Plugins conformance
+        run: python3 scripts/validate_agent_plugins.py
+
+      # --- Release metadata -----------------------------------------------
+
+      - name: Validate release metadata (pull request)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python3 scripts/validate_release.py --base "origin/$BASE_REF"
+
+      - name: Validate release metadata (push)
+        if: github.event_name != 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.before }}
+        run: python3 scripts/validate_release.py --base "$BASE_SHA"

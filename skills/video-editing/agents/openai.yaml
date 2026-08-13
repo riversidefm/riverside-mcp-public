@@ -1,0 +1,12 @@
+interface:
+  display_name: "Video Editing"
+  short_description: "Edit a Riverside video timeline"
+  default_prompt: "Remove the filler words and long pauses from my latest Riverside edit."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "riverside"
+      description: "Riverside MCP server — read aligned transcripts at word detail and apply edit-scoped timeline mutations, threading each returned revision into the next call"
+      transport: "streamable_http"
+      url: "https://mcp.riverside.com/mcp"

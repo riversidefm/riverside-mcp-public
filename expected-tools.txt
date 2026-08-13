@@ -1,0 +1,109 @@
+# Live tool surface of https://mcp.riverside.com/mcp — one tool name per line.
+#
+# WHAT THIS IS
+# ------------
+# A reviewed snapshot of the tool names the production MCP endpoint serves.
+# scripts/validate_tool_names.py checks every tool name in skills/** and
+# README.md against this list, so a skill cannot ship a name the server does
+# not serve. The packaging validators do not read SKILL.md bodies, which is why
+# this gate exists separately from them.
+#
+# WHY A SNAPSHOT AND NOT A LIVE QUERY
+# -----------------------------------
+# Calling tools/list requires a user OAuth token, and CI has no way to obtain
+# one non-interactively. A live query would therefore either be skipped in CI
+# (no gate) or need a long-lived credential in repository secrets. A checked-in
+# snapshot is the deliberate tradeoff: it can go stale, but a change to the live
+# surface then shows up as a reviewed diff in a pull request instead of as
+# silent drift.
+#
+# The two halves are sourced independently. Namespaces come from the gateway's
+# own configuration; tool suffixes come from each backend's tool definitions.
+# A rename on either side therefore shows up as a disagreement rather than as
+# two matching mistakes.
+#
+# HOW TO REFRESH
+# --------------
+# 1. Connect an authorized MCP client to https://mcp.riverside.com/mcp.
+# 2. Take the full tools/list result.
+# 3. Replace the list below, keeping it sorted.
+# 4. Open a PR containing only this file plus the required updates to skills/**
+#    and README.md, and say in the description what moved and why. Do not fold a
+#    refresh into an unrelated PR.
+#
+# CAPTURED: 2026-08-09 — 61 tools across 5 namespaces
+#   editing_ 40 · platform_ 13 · media_ 3 · social_ 3 · search_ 2
+#
+# CORRECTED: 2026-08-13 — `editing_editing_batch` -> `editing_batch`.
+#   The 2026-08-09 capture recorded the pre-rename name. editing-mcp-v2 ENG-640
+#   (commit 374f293, 2026-08-12) registers the tool as `batch`, so the gateway's
+#   `editing_` namespace serves `editing_batch` and the doubled-prefix name is
+#   no longer callable. Name-for-name correction only: the count and the
+#   per-namespace totals above are unchanged, and no other entry was re-verified
+#   against the live surface. Separately, `editing_create_edit_from_segments`
+#   and `editing_reorder_timeline` are hidden from tools/list in production by
+#   editing-mcp-v2 EB-731 (both LaunchDarkly gates off for every account as of
+#   2026-08-13). They are left listed here because this gate only checks that a
+#   shipped name COULD be served; removing them belongs to a full refresh.
+
+editing_add_lower_third
+editing_add_text_overlay
+editing_apply_brand
+editing_apply_smart_layout
+editing_apply_smart_mutes
+editing_apply_verified_edit_plan
+editing_batch
+editing_clone_edit
+editing_compare_revisions
+editing_create_edit_from_recording
+editing_create_edit_from_segments
+editing_cut_time_ranges
+editing_get_asset_metadata
+editing_get_brand
+editing_get_captions_presets
+editing_get_editing_guide
+editing_get_export_publish_data
+editing_get_layout
+editing_get_revision
+editing_get_stock_media
+editing_get_stock_music
+editing_insert_audio
+editing_insert_media_as_scene
+editing_insert_overlay
+editing_insert_stock_media
+editing_list_edit_recording_asset_sessions
+editing_list_layouts
+editing_read_aligned_transcript
+editing_read_timeline_in_range
+editing_remove_fillers
+editing_remove_pauses
+editing_reorder_timeline
+editing_resolve_transcript_selection
+editing_restore_audio_cleanup
+editing_set_brand
+editing_set_captions
+editing_set_color_correction
+editing_set_magic_audio
+editing_set_visual_crop
+editing_validate_edit_plan
+media_create-media-upload
+media_finalize-media-upload
+media_get-media
+platform_get_edit
+platform_get_export
+platform_get_production
+platform_get_project
+platform_get_recording
+platform_get_studio
+platform_get_transcript
+platform_list_edits
+platform_list_exports
+platform_list_productions
+platform_list_projects
+platform_list_recordings
+platform_list_studios
+search_recording_transcripts_exact
+search_riverside
+social_get_connected_platforms
+social_get_publishing_guidelines
+social_upload_create

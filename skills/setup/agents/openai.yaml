@@ -1,0 +1,9 @@
+# Connection guidance only. Deliberately declares no `dependencies.tools` entry:
+# this skill explains and troubleshoots the one-time OAuth connection, so it must
+# stay usable when the Riverside MCP is not yet reachable. Requiring the very
+# dependency the user is failing to connect to would make the help unreachable
+# exactly when it is needed.
+interface:
+  display_name: "Setup"
+  short_description: "Connect Riverside and troubleshoot the connection"
+  default_prompt: "Help me connect my Riverside account to this plugin."
