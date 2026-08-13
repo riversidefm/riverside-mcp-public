@@ -1,0 +1,12 @@
+interface:
+  display_name: "Social Publishing"
+  short_description: "Publish or schedule Riverside clips to social platforms"
+  default_prompt: "Publish my latest Riverside clip to YouTube as unlisted."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "riverside"
+      description: "Riverside MCP server — read connected platforms and live publishing guidelines, then upload a clip after explicit confirmation"
+      transport: "streamable_http"
+      url: "https://mcp.riverside.com/mcp"

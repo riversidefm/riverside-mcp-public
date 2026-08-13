@@ -1,0 +1,53 @@
+{
+  "name": "riverside",
+  "version": "0.6.2",
+  "description": "Riverside podcast and recording platform. Browse recordings, search transcripts, manage content, and publish clips to YouTube, TikTok, and Instagram.",
+  "author": {
+    "name": "Riverside",
+    "url": "https://riverside.com"
+  },
+  "homepage": "https://riverside.com",
+  "repository": "https://github.com/riversidefm/riverside-mcp",
+  "license": "MIT",
+  "keywords": [
+    "riverside",
+    "podcast",
+    "video",
+    "recording",
+    "transcript",
+    "editing",
+    "publishing",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": {
+    "riverside": {
+      "type": "http",
+      "url": "https://mcp.riverside.com/mcp"
+    }
+  },
+  "interface": {
+    "displayName": "Riverside",
+    "shortDescription": "Search, edit & publish video",
+    "longDescription": "Search your Riverside archive by what was said in it, browse productions, studios, projects, recordings and transcripts, edit video timelines, and publish or schedule clips to connected social platforms. Requires a Riverside account on a qualifying paid plan; Free and Pro accounts cannot use the MCP.",
+    "developerName": "Riverside",
+    "category": "Creativity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://riverside.com",
+    "supportURL": "https://support.riverside.com/hc/en-us/articles/37803607978141-Connect-to-Riverside-MCP",
+    "privacyPolicyURL": "https://riverside.com/privacy-policy",
+    "termsOfServiceURL": "https://riverside.com/terms-conditions",
+    "defaultPrompt": [
+      "Find the Riverside recording where we talked about fundraising",
+      "Remove the filler words from my latest Riverside edit",
+      "Publish my latest Riverside clip to YouTube as unlisted"
+    ],
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "screenshots": []
+  }
+}

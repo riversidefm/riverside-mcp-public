@@ -1,0 +1,6 @@
+interface:
+  display_name: "Riverside"
+  short_description: "Search recordings, edit video, and publish clips"
+  icon_small: "./assets/logo.png"
+  icon_large: "./assets/logo.png"
+  default_prompt: "Use Riverside to find a recording by what was said in it, edit it, or publish a clip."

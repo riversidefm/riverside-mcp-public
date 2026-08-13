@@ -1,0 +1,12 @@
+interface:
+  display_name: "Content Discovery"
+  short_description: "Find Riverside recordings, transcripts, and projects"
+  default_prompt: "Find the Riverside recording where we talked about fundraising."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "riverside"
+      description: "Riverside MCP server — search recordings by spoken content and browse productions, studios, projects, recordings, edits, exports, and transcripts"
+      transport: "streamable_http"
+      url: "https://mcp.riverside.com/mcp"
