@@ -1,13 +1,6 @@
 ---
 name: video-editing
-description: >
-  Use when the user wants to cut, trim, clean up, caption, lay out, crop,
-  brand, add overlays, stock media or music to, or otherwise change the content
-  of a Riverside edit, or to turn a raw recording into an editable edit. Not for
-  browsing or searching existing content (see content-discovery), and not for
-  publishing to social platforms (see social-publishing). If the question is
-  whether an editing error is really an authentication or connection problem,
-  use setup first.
+description: Use when the user wants to cut, trim, clean up, caption, lay out, crop, brand, add overlays, stock media or music to, or otherwise change the content of a Riverside edit, or to turn a raw recording into an editable edit. Not for browsing or searching existing content (see content-discovery), and not for publishing to social platforms (see social-publishing). If the question is whether an editing error is really an authentication or connection problem, use setup first.
 ---
 
 # Video editing

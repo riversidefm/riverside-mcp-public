@@ -1,13 +1,6 @@
 ---
 name: content-discovery
-description: >
-  Use when the user wants to search, find, list, browse, or retrieve their
-  Riverside content — productions, studios, projects, recordings, edits,
-  exports, transcripts — by what was said in it, by its title or topic, or by
-  where it lives; when they ask for a download or share link; or when another
-  workflow first needs a studioId, productionId, projectId, sessionId, or
-  editId. Not for creating or changing an edit (see video-editing), and not for
-  publishing to social platforms (see social-publishing).
+description: Use when the user wants to search, find, list, browse, or retrieve their Riverside content — productions, studios, projects, recordings, edits, exports, transcripts — by what was said in it, by its title or topic, or by where it lives; when they ask for a download or share link; or when another workflow first needs a studioId, productionId, projectId, sessionId, or editId. Not for creating or changing an edit (see video-editing), and not for publishing to social platforms (see social-publishing).
 ---
 
 # Content discovery
