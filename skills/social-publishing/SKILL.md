@@ -1,12 +1,6 @@
 ---
 name: social-publishing
-description: >
-  Use when the user wants to post, share, publish, upload, or schedule a
-  Riverside clip to a connected social platform — YouTube, YouTube Shorts,
-  TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok",
-  "schedule this to YouTube for 9am", "share on LinkedIn"). Not for creating or
-  editing clips (see video-editing), connecting or disconnecting social
-  accounts, or managing posts once they are published.
+description: Use when the user wants to post, share, publish, upload, or schedule a Riverside clip to a connected social platform — YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok", "schedule this to YouTube for 9am", "share on LinkedIn"). Not for creating or editing clips (see video-editing), connecting or disconnecting social accounts, or managing posts once they are published.
 ---
 
 # Social publishing

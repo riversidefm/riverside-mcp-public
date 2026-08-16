@@ -1,11 +1,6 @@
 ---
 name: setup
-description: >
-  Use when installing or connecting Riverside on Claude Code, Cursor, ChatGPT,
-  or Codex; when authentication, 401, auth-loop, tool-not-found, account, or plan
-  issues prevent tools from working; or when a feature-disabled or precondition
-  error might be mistaken for a connection failure. Do not use for normal
-  content, editing, or publishing after the connection works.
+description: Use when installing or connecting Riverside on Claude Code, Cursor, ChatGPT, or Codex; when authentication, 401, auth-loop, tool-not-found, account, or plan issues prevent tools from working; or when a feature-disabled or precondition error might be mistaken for a connection failure. Do not use for normal content, editing, or publishing after the connection works.
 ---
 
 # Setup and connection

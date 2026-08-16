@@ -24,6 +24,28 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.6.4] - 2026-08-16
+
+Makes every skill `description` readable by naive frontmatter parsers.
+
+- **All four descriptions were YAML folded block scalars (`description: >`).**
+  A parser that reads the value off the `description:` line — rather than
+  gathering the indented lines beneath it — sees the literal `>` and nothing
+  else. cursor.directory's repository auto-detect does exactly that, so all
+  four skills arrived at its submission form with `>` as their description and
+  had to be filled in by hand. This repo already knew the hazard:
+  `validate_cursor_package.py` carries a comment explaining that a block scalar
+  "carries its value in the indented lines" because it had to special-case it.
+- **They are now single-line plain scalars.** Verified against a YAML parser:
+  each parsed value is identical to what it was before, except that the block
+  scalar's trailing newline is gone — an artifact of the format, not content.
+  No wording changed. Plain (unquoted) form is deliberate: a naive
+  `split(":", 1)` recovers the exact text with no quote artifacts to strip.
+  Checked that none of the four contains a `": "` or `" #"` sequence, or a
+  leading YAML indicator character, so all four are valid plain scalars.
+- **Costs four long lines in the source files**, which is the trade for the
+  descriptions surviving every parser that reads them.
+
 ## [0.6.3] - 2026-08-13
 
 Corrects the `repository` URL advertised by every vendor manifest.
