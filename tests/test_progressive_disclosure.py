@@ -19,6 +19,7 @@ ROUTES = {
     ("setup", None): 6_875,
     ("social-publishing", "results-and-recovery.md"): 9_855,
     ("social-publishing", "scheduling-and-draft-export.md"): 9_855,
+    ("social-publishing", "upload-status.md"): 9_855,
     ("video-editing", "captions-and-brand.md"): 24_112,
     ("video-editing", "cuts-and-audio.md"): 24_112,
     ("video-editing", "edit-lifecycle.md"): 24_112,

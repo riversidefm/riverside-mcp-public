@@ -45,6 +45,13 @@
 #   editing-mcp-v2 EB-731 (both LaunchDarkly gates off for every account as of
 #   2026-08-13). They are left listed here because this gate only checks that a
 #   shipped name COULD be served; removing them belongs to a full refresh.
+#
+# ADDED: 2026-08-27 — `social_get_upload_status` (62 tools; social_ 3 -> 4).
+#   Listed ahead of the live surface, not from a tools/list capture: this gate
+#   fails any tool name a skill mentions and this list omits, so the name has to
+#   be here before the 0.7.0 skills can reference it. The social-publishing-mcp
+#   change that registers it deploys to prod on merge; land the bundle after it.
+#   Name-for-name addition only — nothing else was re-verified.
 
 editing_add_lower_third
 editing_add_text_overlay
@@ -106,4 +113,5 @@ search_recording_transcripts_exact
 search_riverside
 social_get_connected_platforms
 social_get_publishing_guidelines
+social_get_upload_status
 social_upload_create

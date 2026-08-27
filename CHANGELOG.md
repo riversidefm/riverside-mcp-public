@@ -24,6 +24,30 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.7.0] - 2026-08-27
+
+Adds the publish read-back. `social_upload_create` returns when a publish is
+*accepted*, and until now nothing on the social surface could tell you what
+became of it — so an agent reported "published" for posts that never published.
+
+- **New tool `social_get_upload_status`.** Takes the `uploadId` that
+  `social_upload_create` returns and reports `PENDING`, `SCHEDULED`,
+  `COMPLETED`, or `FAILED` with a `terminal` flag, plus `externalId` once the
+  post exists and a bounded `reasonCode` + recovery sentence when it failed.
+- **New reference `skills/social-publishing/references/upload-status.md`**, and
+  a routing row for it. It carries the polling cadence, what each terminal state
+  does and does not authorize, and two access facts worth knowing: any user in
+  the account can read any upload in it, and an unknown, foreign, or cancelled
+  `uploadId` all return the same error, so a cancelled upload cannot be
+  distinguished from one that never existed.
+- **Retracted a premise in `results-and-recovery.md`.** It said retrying was
+  unsafe partly because there was "no authoritative status readback". There is
+  one now. The advice is unchanged for the case it actually governs — a call
+  that returned nothing yielded no `uploadId` to read back — but the reason is
+  now the accurate one.
+- The safety contract is untouched. The new tool reads only; nothing here gained
+  a way to cancel, edit, retry, or unpublish a post.
+
 ## [0.6.4] - 2026-08-16
 
 Makes every skill `description` readable by naive frontmatter parsers.
