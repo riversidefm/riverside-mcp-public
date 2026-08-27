@@ -43,10 +43,11 @@ unpublish, and neither can any other tool in this skill.
   A failed publish created no post, so republishing is admissible, but it is a
   new `social_upload_create` call and needs the main skill's full preview and a
   new explicit confirmation. Fix what `reason` names first.
-- **`PENDING` for a long time** — do not republish. A duplicate publish of the
-  same clip can suppress the first one's render and leave both stuck. Tell the
-  user the publish is still processing and that a stuck publish is retried from
-  the Riverside web interface, not from here.
+- **`PENDING` for a long time** — do not republish. The first publish may still
+  complete on its own, and there is no idempotency key, so a second call risks a
+  duplicate live post rather than replacing the first. Tell the user the publish
+  is still processing; a publish that never completes is retried from the
+  Riverside web interface, not from here.
 - **`COMPLETED`** — report `externalId`. This skill returns no post URL and
   cannot construct one; do not guess a link from the id.
 - **`SCHEDULED`** — report `scheduledAt`. Changing or cancelling a schedule
