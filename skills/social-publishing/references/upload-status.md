@@ -1,76 +1,41 @@
 # Checking a publish outcome
 
-`social_upload_create` returns when the publish is *accepted*, not when the post
-exists. Rendering, scheduling, and the platform upload all happen afterwards and
-each can fail silently. `social_get_upload_status(uploadId)` is the only way to
-learn what actually happened, and the `uploadId` from each `social_upload_create`
-result is its only input.
+`social_upload_create` means accepted, never live. Read
+`social_get_upload_status(uploadId)` to learn the outcome; only `COMPLETED`
+proves the post is live. `externalId` can appear early and is not proof.
 
-Never tell the user a post is live off `social_upload_create` alone.
+## Read and act
 
-## Statuses
+Branch on `terminal`, not a memorised status. `PENDING` (rendering/uploading)
+and `SCHEDULED` (queued for `scheduledAt`) are non-terminal; `COMPLETED` is
+terminal. `FAILED` is normally terminal, except
+`PLATFORM_CONNECTION_EXPIRED` with `scheduledAt`: it is non-terminal because
+reconnecting resumes the original scheduled post.
 
-| `status` | `terminal` | What it means |
-|---|---|---|
-| `PENDING` | `false` | Still rendering, or handed to the uploader. Nothing has reached the platform. |
-| `SCHEDULED` | `false` | Queued for `scheduledAt`. Nothing to watch until then. |
-| `COMPLETED` | `true` | The post exists. `externalId` is the platform's own post id. |
-| `FAILED` | `true` | Nothing was posted. `reasonCode` and `reason` say why. |
+- **`PENDING`** — it may still publish and has no retry path. Do not republish.
+  Check once shortly after publishing, then only on user request.
+- **`SCHEDULED`** — report `scheduledAt` and stop the conversation.
+- **`COMPLETED`** — report the outcome, but no URL: this tool cannot return or
+  construct one.
+- **Scheduled connection expired** — reconnect, do not republish, then re-read.
+- **Immediate connection expired** — reconnect before any new publish and
+  follow the returned `reason`.
+- **`UNKNOWN` or a missing failure category** — this cannot prove whether a
+  post exists. Do not republish until the platform or Riverside Support
+  verifies the outcome. Never treat every `FAILED` upload as no post.
+- **`RENDER_DID_NOT_COMPLETE`** — retry only in the Riverside web app, never
+  by creating another MCP upload.
 
-Branch on `terminal`, never on a memorised list of statuses. `SCHEDULED` is the
-one non-terminal status that is still a stopping point for this conversation:
-report the scheduled time and stop checking.
+Relay the bounded Riverside-authored `reason`, not raw/internal text. This tool
+only reads: it cannot cancel, edit, unpublish, or retry.
 
-`externalId` is null until `COMPLETED`. `reasonCode` and `reason` are set only
-when `FAILED`. Exactly one of `clipId` and `sessionId` is set.
+## Fields and access
 
-## Polling
+`clipId` and `sessionId` are mutually exclusive; a text-only post has neither.
+Unknown, cancelled, foreign-account, and inaccessible production-scoped uploads
+share one authorization error. Report the upload as unreadable, not nonexistent;
+readability does not prove who published it.
 
-Check once shortly after publishing, then only on the user's prompt. A render
-can take minutes and a scheduled post hours or days, so there is no polling loop
-worth running inside one conversation: report the current state and let the user
-ask again.
-
-If the user leaves before a terminal status, say plainly that the outcome is not
-yet known and that the post may still publish on its own.
-
-## Acting on a result
-
-`social_get_upload_status` reads only. It cannot cancel, edit, retry, or
-unpublish, and neither can any other tool in this skill.
-
-- **`FAILED`** — relay `reason` as written; it is Riverside's own recovery text.
-  A failed publish created no post, so republishing is admissible, but it is a
-  new `social_upload_create` call and needs the main skill's full preview and a
-  new explicit confirmation. Fix what `reason` names first.
-- **`PENDING` for a long time** — do not republish. The first publish may still
-  complete on its own, and there is no idempotency key, so a second call risks a
-  duplicate live post rather than replacing the first. Tell the user the publish
-  is still processing; a publish that never completes is retried from the
-  Riverside web interface, not from here.
-- **`COMPLETED`** — report `externalId`. This skill returns no post URL and
-  cannot construct one; do not guess a link from the id.
-- **`SCHEDULED`** — report `scheduledAt`. Changing or cancelling a schedule
-  happens in the Riverside web interface.
-
-## Reading it back later
-
-An `uploadId` stays readable after the conversation that created it, so a user
-returning later can be answered from the id alone.
-
-Two access facts to keep in mind:
-
-- Any user in the same Riverside account can read any upload in it, not only
-  their own. Do not treat a readable upload as proof of who published it.
-- An unknown `uploadId`, one belonging to another account, and one whose upload
-  was cancelled all return the same authorization error. A cancelled upload is
-  indistinguishable from one that never existed, so report that the upload could
-  not be read rather than asserting it does not exist.
-
-## Correlating with connected accounts
-
-`social_get_upload_status` returns `platform` in upper snake case (`YOUTUBE`,
-`YOUTUBE_SHORTS`, `TIKTOK`, `INSTAGRAM`, `FACEBOOK`, `LINKEDIN`, `X`).
-`social_get_connected_platforms` returns mixed case (`YouTube`, `TikTok`) for
-the same platforms. Compare them case-insensitively, or an account match will
-silently fail.
+For account correlation, strip `_SHORTS` from upper-snake `platform`, then
+compare case-insensitively with connected accounts. Thus `YOUTUBE_SHORTS` uses
+the single `YouTube` account.
