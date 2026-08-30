@@ -36,9 +36,10 @@ became of it — so an agent reported "published" for posts that never published
   post exists and a bounded `reasonCode` + recovery sentence when it failed.
 - **New reference `skills/social-publishing/references/upload-status.md`**, and
   a routing row for it. It carries the polling cadence, what each terminal state
-  does and does not authorize, and two access facts worth knowing: any user in
-  the account can read any upload in it, and an unknown, foreign, or cancelled
-  `uploadId` all return the same error, so a cancelled upload cannot be
+  does and does not authorize, and two access facts worth knowing: MCP-created
+  uploads are account-wide, while web-app production-scoped uploads can require
+  production assignment; an unknown, foreign, or cancelled `uploadId` all
+  return the same error, so a cancelled upload cannot be
   distinguished from one that never existed.
 - **Retracted a premise in `results-and-recovery.md`.** It said retrying was
   unsafe partly because there was "no authoritative status readback". There is
