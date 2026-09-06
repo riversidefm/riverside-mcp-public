@@ -24,6 +24,26 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.6.5] - 2026-09-06
+
+Docs-only. Corrects what the setup guidance claims about ChatGPT write actions.
+
+- **Stop asserting an OpenAI plan matrix we cannot back.** The prerequisites
+  said "ChatGPT Pro supports read/fetch actions only. ChatGPT Business and
+  Enterprise/Edu support write/modify actions." That was uncited, silent on
+  ChatGPT Plus, and is exactly the kind of third-party detail that moves
+  without telling us. It now states the requirement that is actually ours — a
+  qualifying paid Riverside plan — and sends the reader to OpenAI for
+  everything on their side. The README carries the link; the skill just says
+  to check, to stay inside its context budget.
+- **Widen the "tool not listed" troubleshooting row to the all-writes-missing
+  case.** From EB-1019, where a customer's connector was authenticating and
+  serving read tools normally while every edit write came back not-exposed.
+  The Riverside surface was verified complete throughout, so the row now says
+  the connection is fine and points at the host's write permission. Previously
+  the nearest rows pointed at reconnecting or at a Riverside plan problem,
+  both of which are dead ends for this symptom.
+
 ## [0.6.4] - 2026-08-16
 
 Makes every skill `description` readable by naive frontmatter parsers.

@@ -21,10 +21,12 @@ Riverside is packaged for ChatGPT and Codex too (`.codex-plugin/plugin.json`), s
 Until Riverside appears in the official directory, connect the tools manually:
 
 - **ChatGPT prerequisites:** your Riverside account must be on a qualifying paid
-  plan; Riverside Free and Pro accounts are not admitted. ChatGPT Pro supports
-  read/fetch actions only, while ChatGPT Business and Enterprise/Edu support
-  write/modify actions. Workspace admins may need to enable Developer Mode and
-  approve Riverside. Use ChatGPT on the web; MCP apps are not available on mobile.
+  plan; Riverside Free and Pro accounts are not admitted. Separately, write
+  actions have to be enabled for your ChatGPT workspace — which plans and
+  settings allow them is OpenAI's to define, so check
+  [OpenAI's developer mode documentation](https://help.openai.com/en/articles/12584461-developer-mode-and-mcp-apps-in-chatgpt).
+  Workspace admins may need to enable Developer Mode and approve Riverside. Use
+  ChatGPT on the web; MCP apps are not available on mobile.
 - **ChatGPT:** enable Developer Mode in **Settings → Security and login**, then create a Riverside plugin using `https://mcp.riverside.com/mcp` with OAuth authentication.
 - **Codex:** run `codex mcp add riverside --url https://mcp.riverside.com/mcp`, then `codex mcp login riverside`.
 

@@ -49,9 +49,10 @@ Before connecting ChatGPT:
 
 - The Riverside account must be on a qualifying paid plan; Riverside Free and
   Pro accounts are not admitted.
-- ChatGPT Pro supports read/fetch actions only. ChatGPT Business and
-  Enterprise/Edu support write/modify actions, and workspace admins may need to
-  enable Developer Mode and approve Riverside.
+- Write actions must be separately enabled for the ChatGPT workspace. Which
+  plans allow them is OpenAI's to define and changes, so check their
+  developer-mode docs. Admins may also need Developer Mode on and Riverside
+  approved.
 - Use ChatGPT on the web. MCP apps are not available on mobile.
 
 #### Before the directory listing is available
@@ -107,7 +108,7 @@ failed.
 |---|---|---|
 | `401` / repeated auth loop / "unauthorized" | Authorization expired or was revoked | Reconnect Riverside from the host's connection settings or CLI and re-authenticate. Complete the browser sign-in fully. |
 | No Riverside tools listed | Riverside is not connected | Check the separate Riverside connection and reconnect it; enabling the plugin alone provides no tools. |
-| One requested tool is not found while other Riverside tools are listed | Capability is not exposed on this surface | Report it as unsupported on this surface; do not reconnect. Use a listed alternative only if it satisfies the request. |
+| A tool is not listed — including reads working while every write is missing | Not exposed here, or writes are off for this ChatGPT workspace | Report it as unsupported; do not reconnect, the connection is fine. Use a listed alternative only if it fits the request. |
 | Tools appear but every call fails to authorize | Account on a plan that is not admitted | The MCP requires a qualifying paid plan; Free and Pro accounts cannot use it. Plan details are at https://riverside.com/pricing. |
 | Sign-in never returns / hangs | Browser/redirect interrupted | Close the tab, retry to restart the flow, and complete the browser step in one go. |
 | A specific tool reports feature disabled or a missing prerequisite | Tool or workflow unavailable or incomplete (e.g. an edit with no transcript) | Surface the message; do not reconnect or retry blindly. Load the relevant operational skill only if the user asks to recover or continue. |
