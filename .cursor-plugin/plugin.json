@@ -1,7 +1,7 @@
 {
   "name": "riverside",
   "description": "Connects Cursor to Riverside — search recordings by what was said in them, edit video timelines, and publish clips to social platforms.",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "author": { "name": "Riverside", "email": "support@riverside.fm" },
   "homepage": "https://riverside.com",
   "repository": "https://github.com/riversidefm/riverside-mcp-public",

@@ -12,6 +12,7 @@ gateway with the `social_` prefix.
 |---|---|
 | `social_get_connected_platforms` | A studio's connected platforms and accounts, with each account's live options and limits |
 | `social_get_publishing_guidelines` | Current per-platform metadata rules, media constraints, workflow, and error recovery |
+| `social_get_upload_status` | The real outcome of a publish |
 | `social_upload_create` | Publish or schedule one clip to one platform |
 
 ## Safety contract
@@ -50,9 +51,10 @@ read any newly matching reference before the next workflow call.
 |---|---|
 | The user names a future or wall-clock time, or the clip is or may be a draft/unexported and require `composeSettings` | [Scheduling and draft export](references/scheduling-and-draft-export.md) |
 | The publish is processing, partial, or failed; or the call times out, has a transport failure, returns no usable result, or otherwise leaves the outcome unknown | [Results and recovery](references/results-and-recovery.md) |
+| A publish was made and its outcome is unconfirmed | [Publish outcome](references/upload-status.md) |
 
-Both rows can apply during one workflow. A wall-clock phrase such as "tomorrow
-at 9" matches the first row even before its timezone is known.
+More than one row can apply during one workflow. A wall-clock phrase such as
+"tomorrow at 9" matches the first row even before its timezone is known.
 
 ## Publish workflow
 

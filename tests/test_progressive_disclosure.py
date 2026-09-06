@@ -19,6 +19,7 @@ ROUTES = {
     ("setup", None): 6_875,
     ("social-publishing", "results-and-recovery.md"): 9_855,
     ("social-publishing", "scheduling-and-draft-export.md"): 9_855,
+    ("social-publishing", "upload-status.md"): 9_855,
     ("video-editing", "captions-and-brand.md"): 24_112,
     ("video-editing", "cuts-and-audio.md"): 24_112,
     ("video-editing", "edit-lifecycle.md"): 24_112,
@@ -75,17 +76,44 @@ class ProgressiveDisclosureContextTests(unittest.TestCase):
                     f"PR #9 loaded {baseline}",
                 )
 
-    def test_compound_social_route_reduces_loaded_instruction_bytes(self) -> None:
-        loaded = self.context_bytes(
-            "social-publishing",
-            "scheduling-and-draft-export.md",
-            "results-and-recovery.md",
-        )
+    def test_social_publishing_compound_route_crossover_stays_where_reviewed(
+        self,
+    ) -> None:
+        """Keep ordinary social routes smaller while bounding full fan-out.
 
-        self.assertLess(
-            loaded,
-            9_855,
-            f"compound social route loads {loaded} bytes; PR #9 loaded 9855",
+        The status capability can make a legitimate multi-reference route
+        larger than the PR #9 monolith. Ordinary zero- and one-reference
+        routes must still save bytes, while all three references remain under
+        an explicit reviewed ceiling.
+        """
+        entrypoint = (SKILLS / "social-publishing" / "SKILL.md").stat().st_size
+        references = sorted(
+            path.stat().st_size
+            for path in (SKILLS / "social-publishing" / "references").glob("*.md")
+        )
+        self.assertEqual(3, len(references), "social publishing routes three references")
+
+        def worst_case(count: int) -> int:
+            """The most expensive route loading `count` references."""
+            largest = references[len(references) - count :] if count else []
+            return entrypoint + sum(largest)
+
+        baseline = 9_855  # PR #9 skills/social-publishing/SKILL.md
+        for count in (0, 1):
+            with self.subTest(references=count):
+                self.assertLess(
+                    worst_case(count),
+                    baseline,
+                    f"worst {count}-reference route loads {worst_case(count)} "
+                    f"bytes; PR #9 loaded {baseline}",
+                )
+
+        fan_out_ceiling = 12_500
+        self.assertLessEqual(
+            worst_case(3),
+            fan_out_ceiling,
+            f"full fan-out loads {worst_case(3)} bytes, over the reviewed "
+            f"{fan_out_ceiling}-byte ceiling",
         )
 
     def test_video_editing_compound_route_crossover_stays_where_reviewed(

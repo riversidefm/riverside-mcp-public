@@ -12,9 +12,9 @@ contract still governs every follow-up here.
   user-facing message when present; do not expose a raw internal status or
   resend the call.
 - **Timeout, transport failure, missing response, or unknown result:** say that
-  submission could have happened but cannot be confirmed. Stop. With no
-  idempotency key or authoritative status readback, retrying could duplicate a
-  live post.
+  submission could have happened but cannot be confirmed. Stop. A call that
+  returned nothing yielded no `uploadId` to read back, so with no idempotency
+  key, retrying could duplicate a live post.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
