@@ -59,6 +59,7 @@ Publish or schedule clips to YouTube, TikTok, Instagram, Facebook, LinkedIn, and
 - "Post my latest clip to TikTok"
 - "Schedule my interview highlights to YouTube Shorts for tomorrow at 9am"
 - "Share this clip on LinkedIn"
+- "Post this image to X with a caption"
 
 ## Requirements
 

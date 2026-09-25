@@ -89,6 +89,8 @@ that changes underneath you.
 
 ## Not owned here
 
-Uploading new media is a different tool family and is not part of this skill. If
-the user needs a file that is not already in their library, say so plainly
-rather than reaching for an editing tool that cannot do it.
+Uploading new media is the `media_` tool family, not this skill:
+`media_create_media_upload`, then `curl -T` to its `uploadUrl`, then
+`media_finalize_media_upload`. Only a client that can read local files and run
+`curl` can do it; a browser-only chat cannot. Never reach for an editing tool
+to upload.
