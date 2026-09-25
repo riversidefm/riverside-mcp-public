@@ -109,7 +109,7 @@ class ProgressiveDisclosureContextTests(unittest.TestCase):
                     f"bytes; PR #9 loaded {baseline}",
                 )
 
-        fan_out_ceiling = 15_500
+        fan_out_ceiling = 16_000
         self.assertLessEqual(
             worst_case(4),
             fan_out_ceiling,

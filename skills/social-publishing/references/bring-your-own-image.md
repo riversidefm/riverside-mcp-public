@@ -15,16 +15,21 @@ calls, all with the user's `productionId` and `studioId`:
    JPEG only; a thumbnail must be at most 2 MB.
 2. `media_create_media_upload` with `fileName`, `mimeType`, `fileSizeBytes`.
    It returns a `mediaId` and an `uploadUrl`.
-3. `curl -T <path> -H "Content-Type: <mimeType>" "<uploadUrl>"`, then
-   `media_finalize_media_upload` with that `mediaId`. Images finalize at once.
+3. `curl --fail-with-body -T <path> -H "Content-Type: <mimeType>"
+   "<uploadUrl>"`. Only on exit 0 call `media_finalize_media_upload` with that
+   `mediaId`; a finalized upload with no bytes is an empty image. Images
+   finalize at once.
 
-A file already in the library needs no upload: `media_list_media` finds it by
-name and returns its `mediaId`.
+This needs a client that can read the file and run `stat` and `curl`; a
+browser-only chat cannot. A file already in the library needs no upload:
+`media_list_media` finds it by name and returns its `mediaId`.
 
 ## One-time network approval
 
 The `curl` step leaves the client's sandbox to reach Riverside's storage. Each
-client asks once; relay the prompt rather than retrying the command:
+client asks once; relay the prompt rather than retrying the command. A client
+with a strict allowlist denies instead of asking: then stop and report the
+domain that needs allowing.
 
 - **Claude Code**: the first connection to a new domain prompts to allow it;
   "Yes, and don't ask again" saves it. Pre-allowing it under the sandbox's
