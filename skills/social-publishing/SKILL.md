@@ -1,12 +1,12 @@
 ---
 name: social-publishing
-description: Use when the user wants to post, share, publish, upload, or schedule a Riverside clip to a connected social platform — YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok", "schedule this to YouTube for 9am", "share on LinkedIn"). Not for creating or editing clips (see video-editing), connecting or disconnecting social accounts, or managing posts once they are published.
+description: Use when the user wants to post, share, publish, upload, or schedule a Riverside clip, an image from their disk, or a caption-only update to a connected social platform — YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok", "schedule this to YouTube for 9am", "post this image on LinkedIn", "use this picture as the thumbnail"). Not for creating or editing clips (see video-editing), connecting or disconnecting social accounts, or managing posts once they are published.
 ---
 
 # Social publishing
 
-Publishes a Riverside clip to an external platform. Tools are exposed at the
-gateway with the `social_` prefix.
+Publishes a Riverside clip, an image, or a caption-only post to an external
+platform. Tools are exposed at the gateway with the `social_` prefix.
 
 | Tool | Purpose |
 |---|---|
@@ -36,8 +36,10 @@ limits, formats, and recovery — never memory or values copied into this file.
 
 - A `studioId`. Only content-discovery can find one
   (`platform_list_studios`); no social tool discovers a studio.
-- A `clipId`, typically an exported edit id from video-editing. An unexported
-  clip may require the export-first choices in the scheduling reference.
+- What to post: a `clipId` (typically an exported edit id from video-editing;
+  an unexported clip may require the export-first choices in the scheduling
+  reference), a `sessionId` for a recording, a `mediaId` for an image, or
+  nothing for a caption-only post.
 - At least one connected account on the target platform.
 
 ## Mandatory routing
@@ -52,6 +54,7 @@ read any newly matching reference before the next workflow call.
 | The user names a future or wall-clock time, or the clip is or may be a draft/unexported and require `composeSettings` | [Scheduling and draft export](references/scheduling-and-draft-export.md) |
 | The publish is processing, partial, or failed; or the call times out, has a transport failure, returns no usable result, or otherwise leaves the outcome unknown | [Results and recovery](references/results-and-recovery.md) |
 | A publish was made and its outcome is unconfirmed | [Publish outcome](references/upload-status.md) |
+| The user names an image or a file on disk, wants a custom thumbnail on a video post, or wants a post with no clip | [Bring your own image](references/bring-your-own-image.md) |
 
 More than one row can apply during one workflow. A wall-clock phrase such as
 "tomorrow at 9" matches the first row even before its timezone is known.

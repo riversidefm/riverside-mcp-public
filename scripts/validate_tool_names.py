@@ -130,6 +130,7 @@ NOT_A_TOOL: dict[str, str] = {
     "bottom_right": "overlay position value",
     "top_left": "overlay position value",
     # Literal example identifiers in worked examples.
+    "network_access": "Codex config.toml key",
     "tok_123": "example id literal",
     "yt_456": "example id literal",
 }
