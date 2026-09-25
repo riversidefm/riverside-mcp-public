@@ -15,7 +15,7 @@ calls, all with the user's `productionId` and `studioId`:
    JPEG only; a thumbnail must be at most 2 MB.
 2. `media_create_media_upload` with `fileName`, `mimeType`, `fileSizeBytes`.
    It returns a `mediaId` and an `uploadUrl`.
-3. `curl --fail-with-body -T <path> -H "Content-Type: <mimeType>"
+3. `curl --fail-with-body -T "<path>" -H "Content-Type: <mimeType>"
    "<uploadUrl>"`. Only on exit 0 call `media_finalize_media_upload` with that
    `mediaId`; a finalized upload with no bytes is an empty image. Images
    finalize at once.
