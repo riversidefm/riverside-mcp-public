@@ -71,5 +71,5 @@ landed is exactly the failure this result exists to prevent.
 The kit's media fields — logo, background image — take the id of media that
 already exists in the library, and the two background options are mutually
 exclusive. Nothing in this tool family uploads anything. If the user hands you a
-new file, tell them it has to be in their media library first; never invent or
-guess an asset id.
+new file, upload it first with `media_create_media_upload` and
+`media_finalize_media_upload`; never invent or guess an asset id.

@@ -24,6 +24,28 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.8.0] - 2026-09-29
+
+Teaches social-publishing to post an image from the user's disk, set a custom
+thumbnail, and publish a caption-only post. The tools grew these arguments in
+riversidefm/social-platform (SL-1291, SL-1292); this release is the skill side.
+
+- **New reference `skills/social-publishing/references/bring-your-own-image.md`**
+  and a routing row for it. It carries the three-call upload
+  (`media_create_media_upload`, `curl -T`, `media_finalize_media_upload`), the
+  one-time network approval each client asks for on the `curl` step (Claude
+  Code's domain prompt, Codex's on-request approval or `network_access`,
+  Cursor's run-outside-sandbox approval or `sandbox.json`), and which argument
+  the resulting `mediaId` goes into: `assets` for an image post,
+  `thumbnailMediaId` for a YouTube, Instagram or Facebook video post, nothing
+  for a caption-only post. It also says the image is not visible to the model.
+- **video-editing no longer says uploading is impossible.** Its two "not part of
+  this skill" sentences now name the `media_` tools instead.
+- The safety contract is untouched. `social_upload_create` is still the only
+  write, still confirmed once per target, and the preview now shows the
+  `mediaId` and the user's own description of the file, since the model never
+  sees the image.
+
 ## [0.7.1] - 2026-09-28
 
 Stops sending agents to export tools the server no longer serves (EB-1254).
