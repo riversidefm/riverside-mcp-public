@@ -33,7 +33,8 @@ Stops sending agents to export tools the server no longer serves (EB-1254).
   "Getting a download link" workflow ended in `unknown tool: list_exports`.
 - **"Getting a download link" is now "Getting a rendered file".** No live tool
   returns a download link, so the workflow ends at the edit's `riversideUrl`
-  instead of promising one.
+  instead of promising one. The skill's link rules no longer say exports carry
+  a `riversideUrl` or a download URL.
 - **`expected-tools.txt` refreshed from a full tools/list** (68 tools, adds the
   `exports_` namespace). This refresh is what made the tool-name gate catch the
   stale references.
