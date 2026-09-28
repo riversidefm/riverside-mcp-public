@@ -24,6 +24,20 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.7.1] - 2026-09-28
+
+Stops sending agents to export tools the server no longer serves (EB-1254).
+
+- **Removed `platform_list_exports` and `platform_get_export`** from
+  content-discovery. The platform backend dropped both on 2026-08-25, so the
+  "Getting a download link" workflow ended in `unknown tool: list_exports`.
+- **"Getting a download link" is now "Getting a rendered file".** No live tool
+  returns a download link, so the workflow ends at the edit's `riversideUrl`
+  instead of promising one.
+- **`expected-tools.txt` refreshed from a full tools/list** (68 tools, adds the
+  `exports_` namespace). This refresh is what made the tool-name gate catch the
+  stale references.
+
 ## [0.7.0] - 2026-08-27
 
 Adds the publish read-back. `social_upload_create` returns when a publish is

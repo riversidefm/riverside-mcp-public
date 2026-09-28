@@ -57,10 +57,9 @@ edit's `editId`.
    the globally newest edit may belong to another studio.
 3. Hand over the two ids.
 
-**Export-ready is not publish-ready.** `platform_list_exports` and
-`platform_get_export` report the state of a rendered artifact. That is not the
-clip state `social_upload_create` checks before publishing, and no tool in this
-skill can read that state. So do not try to pre-confirm publishability, and
+**Export-ready is not publish-ready.** `exports_get_export` reports the state
+of a rendered artifact. That is not the clip state `social_upload_create`
+checks before publishing, and no tool in this skill can read that state. So do not try to pre-confirm publishability, and
 never present a ready export as proof that a clip will publish. Confirm the
 export and composition choices with the user up front instead, so the publish
 can proceed either way — the publishing skill owns its own confirmation step,
