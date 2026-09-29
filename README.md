@@ -54,12 +54,14 @@ Turn recordings into edits, then cut, clean up, caption, lay out, and brand them
 
 ### Social Publishing
 
-Publish or schedule clips to YouTube, TikTok, Instagram, Facebook, LinkedIn, and X.
+Publish or schedule clips, recordings, images and caption-only posts to YouTube, TikTok, Instagram, Facebook, LinkedIn, and X, and manage posts before they go out.
 
 - "Post my latest clip to TikTok"
 - "Schedule my interview highlights to YouTube Shorts for tomorrow at 9am"
 - "Share this clip on LinkedIn"
 - "Post this image to X with a caption"
+- "Move tomorrow's LinkedIn post to Friday"
+- "How many views did my TikTok get?"
 
 ## Requirements
 

@@ -29,6 +29,8 @@ together.
 Teaches social-publishing to post an image from the user's disk, set a custom
 thumbnail, and publish a caption-only post. The tools grew these arguments in
 riversidefm/social-platform (SL-1291, SL-1292); this release is the skill side.
+It also brings the skill up to the social tools the gateway already serves and
+to the rules Riverside's own Publisher agent follows.
 
 - **New reference `skills/social-publishing/references/bring-your-own-image.md`**
   and a routing row for it. It carries the three-call upload
@@ -39,12 +41,28 @@ riversidefm/social-platform (SL-1291, SL-1292); this release is the skill side.
   the resulting `mediaId` goes into: `assets` for an image post,
   `thumbnailMediaId` for a YouTube, Instagram or Facebook video post, nothing
   for a caption-only post. It also says the image is not visible to the model.
+- **Post management, accounts and reporting.** Two new references cover the
+  seven social tools the skill never routed to: finding, changing,
+  rescheduling and cancelling a post before it publishes
+  (`managing-posts.md`), and connecting or disconnecting an account and
+  reading a published post's numbers (`accounts-and-reporting.md`). The
+  entrypoint no longer claims the MCP cannot cancel or edit a post; a
+  published post still cannot be changed here.
+- **Cover frames.** `cover-frame.md` covers an Instagram or TikTok cover taken
+  from the video: both fields in milliseconds from the start of the published
+  clip or edit, the moment located with `editing_read_aligned_transcript`, and
+  never picked silently.
+- **Publisher rules carried over:** re-read an edit before every publish; keep
+  a YouTube title and description separate; media on a scheduled post can be
+  swapped but a video never removed; offer reconnecting instead of the web app;
+  look for a post with `social_list_uploads` after an unknown outcome, which
+  still never authorizes a retry by itself; republish a failed post in place.
 - **video-editing no longer says uploading is impossible.** Its two "not part of
   this skill" sentences now name the `media_` tools instead.
-- The safety contract is untouched. `social_upload_create` is still the only
-  write, still confirmed once per target, and the preview now shows the
-  `mediaId` and the user's own description of the file, since the model never
-  sees the image.
+- Every write is still confirmed once per target, and the full seven-reference
+  fan-out ceiling in `tests/test_progressive_disclosure.py` moves from 16 000
+  to 21 500 bytes; every one-reference route stays under the 9 855-byte
+  baseline.
 
 ## [0.7.1] - 2026-09-28
 
