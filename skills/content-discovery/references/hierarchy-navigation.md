@@ -21,8 +21,7 @@ There is no identity or "me" tool on this surface. Start from a search, or from
    recordings *and* its edits in a single call. Prefer it over calling
    `platform_list_recordings` and `platform_list_edits` separately.
 4. Drill into the item itself: `platform_get_recording`, `platform_get_edit`
-   (which also names its source recording and its exports),
-   `platform_list_exports`, `platform_get_export`.
+   (which also names its source recording).
 
 Use a scoping parameter when the request is genuinely scoped to that container,
 and leave it out when it is not.
@@ -80,7 +79,15 @@ previous evening locally. Then page `platform_list_recordings` to collect every
 recording on that local date, and if more than one falls on it, show them with
 their times and let the user choose.
 
-## Getting a download link
+## Getting a rendered file
+
+No tool returns a download link. `exports_create_export` renders an edit and
+`exports_get_export` reports that render's status, but its `s3Key` is a storage
+key, not a URL, and there is no tool that lists an edit's existing exports.
+
+When the user wants the file, resolve the edit as below and give them its
+`riversideUrl` from `platform_get_edit` so they can export or download it in the
+editor:
 
 1. Resolve the recording, confirm its `status`, and capture its `projectId`.
 2. `platform_get_project` — recordings and edits are siblings under a project,
@@ -88,15 +95,8 @@ their times and let the user choose.
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. `platform_list_exports` scoped to that `editId` — pass the edit's id, not the
-   recording's. Leave the scope off and you get exports across every edit rather
-   than the one you want.
-4. A returned export record is not necessarily a finished file. Confirm ready
-   candidates with `platform_get_export`. Continue only when exactly one is
-   ready; if several are, show their available identifying details and wait for
-   the user to select the export.
-5. Take the selected ready export's download URL.
-6. Share the link only once that export is ready.
+3. Share that edit's `riversideUrl`. Do not construct a download URL from an
+   export's `s3Key`.
 
 ## Transcripts: prose here, cut-grade elsewhere
 

@@ -31,14 +31,15 @@ Which id crosses into another skill:
   start from an existing project edit instead of assuming the ids coincide.
 - **`editId`** — one cut of one or more recordings. Social publishing consumes
   it as the `clipId`.
-- **`exportId`** — one rendered file. Download links live here, not on the edit.
+- **`exportId`** — one rendered file. No tool returns its download link; send
+  the user to the edit's `riversideUrl` instead.
 
 ## Where to read next
 
 | Need | Read |
 |---|---|
 | Find content by exact words, topic, or title | [Search](references/search.md) |
-| Browse hierarchy, determine latest, page completely, or obtain a download link | [Hierarchy navigation](references/hierarchy-navigation.md) |
+| Browse hierarchy, determine latest, page completely, or get a rendered file | [Hierarchy navigation](references/hierarchy-navigation.md) |
 | Resolve or hand off IDs for editing or social publishing | [Cross-skill handoffs](references/cross-skill-handoffs.md) |
 
 **Routing contract:** Before the first Riverside workflow call, evaluate every
@@ -56,17 +57,17 @@ Only this table routes references — a reference never routes to another one.
   `platform_list_recordings` and `platform_list_edits` are optional. Omit them
   for "all my recordings"-style requests, and never carry a narrow scope
   captured in an earlier step into a request the user did not scope that way.
-- **Links come from the platform.** Studios, projects, recordings, edits, and
-  exports each carry a `riversideUrl`. Return the one the server gave you; never
-  construct or guess a URL.
+- **Links come from the platform.** Studios, projects, recordings, and edits
+  each carry a `riversideUrl`. Return the one the server gave you; never
+  construct or guess a URL, and never build one from an export's `s3Key`.
 - **Preview links are opt-in.** `platform_get_recording` withholds the
   token-bearing `previewUrl` unless asked. Set `includePreviewUrl` only once the
   user has explicitly asked for a shareable preview, and read a null value as
   "no share link exists right now".
 - **Verify readiness before sharing.** Recordings and exports carry a `status`.
-  Confirm the content is ready before handing out a download URL or operating on
-  it — a record existing does not mean its file is finished.
-- **Export-ready is not publish-ready.** A ready export means the rendered
-  artifact is downloadable. It is not the clip state `social_upload_create`
+  Confirm the content is ready before sharing or operating on it — a record
+  existing does not mean its file is finished.
+- **Export-ready is not publish-ready.** A ready export means the render
+  finished. It is not the clip state `social_upload_create`
   checks, and no tool here exposes that state — so never offer a ready export as
   evidence that something can be published.

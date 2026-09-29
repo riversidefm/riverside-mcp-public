@@ -58,6 +58,13 @@
 #   runs ahead of production. Confirmed for that one name against the live
 #   surface, not by a full tools/list capture, so the 2026-08-09 counts and every
 #   other entry still stand unverified.
+#
+# CAPTURED: 2026-09-28 — 68 tools across 6 namespaces (full tools/list, EB-1254)
+#   editing_ 38 · social_ 11 · platform_ 11 · media_ 4 · exports_ 2 · search_ 2
+#   Supersedes every entry above. `platform_list_exports` / `platform_get_export`
+#   left the platform backend on 2026-08-25 (platform-mcp#63); exports now live
+#   in the `exports_` namespace, which has no list tool and returns no download
+#   link. `media_` tools use underscores, not hyphens.
 
 editing_add_lower_third
 editing_add_text_overlay
@@ -69,7 +76,6 @@ editing_batch
 editing_clone_edit
 editing_compare_revisions
 editing_create_edit_from_recording
-editing_create_edit_from_segments
 editing_cut_time_ranges
 editing_get_asset_metadata
 editing_get_brand
@@ -90,7 +96,6 @@ editing_read_aligned_transcript
 editing_read_timeline_in_range
 editing_remove_fillers
 editing_remove_pauses
-editing_reorder_timeline
 editing_resolve_transcript_selection
 editing_restore_audio_cleanup
 editing_set_brand
@@ -99,25 +104,33 @@ editing_set_color_correction
 editing_set_magic_audio
 editing_set_visual_crop
 editing_validate_edit_plan
-media_create-media-upload
-media_finalize-media-upload
-media_get-media
+exports_create_export
+exports_get_export
+media_create_media_upload
+media_finalize_media_upload
+media_get_media
+media_list_media
 platform_get_edit
-platform_get_export
 platform_get_production
 platform_get_project
 platform_get_recording
 platform_get_studio
 platform_get_transcript
 platform_list_edits
-platform_list_exports
 platform_list_productions
 platform_list_projects
 platform_list_recordings
 platform_list_studios
 search_recording_transcripts_exact
 search_riverside
+social_cancel_upload
+social_connect_social_account
+social_disconnect_social_account
 social_get_connected_platforms
 social_get_publishing_guidelines
+social_get_upload
+social_get_upload_analytics
 social_get_upload_status
+social_list_uploads
+social_update_upload
 social_upload_create
