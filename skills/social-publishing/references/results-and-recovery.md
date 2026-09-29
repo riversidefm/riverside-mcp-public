@@ -14,8 +14,9 @@ contract still governs every follow-up here.
 - **Timeout, transport failure, missing response, or unknown result:** say that
   submission could have happened but cannot be confirmed. With no idempotency
   key, retrying could duplicate a live post. Look for it with
-  `social_list_uploads` for that content, platform, and time; report an upload
-  you find. Finding none still does not authorize a retry on its own.
+  `social_list_uploads`, setting `from`/`to` to cover the attempt (the default
+  window starts now), and match the content and platform; report an upload you
+  find. Finding none still does not authorize a retry on its own.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
