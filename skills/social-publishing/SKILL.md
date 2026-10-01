@@ -49,7 +49,8 @@ memory or values copied into this file.
 
 Before the first social workflow call, evaluate every row against the user's
 request and known context. Read every matching reference, and no unrelated
-reference. Re-evaluate the table after every social response or failed call.
+reference. Re-evaluate the table after every social response or failed call;
+read any newly matching reference before the next workflow call.
 
 | Observable condition | Required reference |
 |---|---|
