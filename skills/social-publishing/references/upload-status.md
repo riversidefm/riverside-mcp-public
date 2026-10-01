@@ -27,8 +27,9 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
   verifies the outcome. Never treat every `FAILED` upload as no post.
 - **Any other `FAILED`** — it can be rescheduled or republished in place with
   `social_update_upload` or from the Riverside web app, whatever the
-  `reasonCode`. Re-read the status first and confirm it is still `FAILED`;
-  never create a second upload.
+  `reasonCode`. Re-read the status first and confirm it is still `FAILED`,
+  show the preview again and get a new confirmation; never create a second
+  upload.
 
 Relay the bounded Riverside-authored `reason`, not raw/internal text. This tool
 only reads.
