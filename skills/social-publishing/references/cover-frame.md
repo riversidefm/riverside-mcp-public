@@ -26,8 +26,6 @@ You cannot see the video, so never pick a frame silently.
 - The user names a time, or a line of speech. For an edit, find that line
   with `editing_read_aligned_transcript(editId)`: its `playableStartMs` is on
   the edit's own timeline and is the value to send.
-- `platform_get_transcript` times run from the start of the recording session,
-  so use them only for a post that publishes the whole recording by
-  `sessionId`. For any other clip, ask the user for the time.
+- For anything other than an edit, ask the user for the time.
 - In the confirmation summary, show the cover as mm:ss and the line spoken
   there when known.

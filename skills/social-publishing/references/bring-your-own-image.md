@@ -46,10 +46,10 @@ domain that needs allowing.
 ## Then publish
 
 - **Image post**: `assets: [{ mediaId }]` and no `clipId`. One image per post.
-- **Thumbnail**: `thumbnailMediaId` on a `clipId` or `sessionId` video post to
+- **Thumbnail**: `thumbnailMediaId` on a `clipId` video post to
   YouTube, Instagram or Facebook. Never together with `assets`, and never with
   Instagram's `thumbnailOffset`.
-- **Caption-only**: no `clipId`, `sessionId` or `assets`.
+- **Caption-only**: no `clipId` or `assets`.
 
 The image is not visible to you. Never describe it in the caption or claim to
 have checked it. The main workflow's preview and confirmation still apply; the

@@ -1,6 +1,6 @@
 ---
 name: social-publishing
-description: Use when the user wants to post, share, publish, upload, or schedule a Riverside clip, edit, recording, an image from their disk, or a caption-only update to a connected social platform — YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok", "post this image on LinkedIn", "use this picture as the thumbnail"); to find, change, reschedule, or cancel a post that has not gone out yet; to connect or disconnect a social account; or to ask how a published post is doing. Not for creating or editing clips (see video-editing), or for changing a post that has already published.
+description: Use when the user wants to post, share, publish, upload, or schedule a Riverside clip or edit, an image from their disk, or a caption-only update to a connected social platform — YouTube, YouTube Shorts, TikTok, Instagram, Facebook, LinkedIn, or X (e.g. "post my clip to TikTok", "post this image on LinkedIn", "use this picture as the thumbnail"); to find, change, reschedule, or cancel a post that has not gone out yet; to connect or disconnect a social account; or to ask how a published post is doing. Not for creating or editing clips (see video-editing), or for changing a post that has already published.
 ---
 
 # Social publishing
@@ -41,8 +41,9 @@ memory or values copied into this file.
   and `studioSlug`: content-discovery finds them (`platform_list_studios`,
   `platform_get_studio`, `platform_list_productions`).
 - What to post: a `clipId` (a clip id, or an edit id passed unchanged), a
-  recording's `sessionId` from content-discovery, a `mediaId` for an image, or
-  nothing for a caption-only post.
+  `mediaId` for an image, or nothing for a caption-only post. A recording
+  can't be published as it is; it needs a clip or an edit first (see
+  video-editing).
 
 ## Mandatory routing
 
