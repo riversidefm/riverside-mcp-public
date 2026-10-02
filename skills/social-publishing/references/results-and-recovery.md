@@ -12,9 +12,11 @@ contract still governs every follow-up here.
   user-facing message when present; do not expose a raw internal status or
   resend the call.
 - **Timeout, transport failure, missing response, or unknown result:** say that
-  submission could have happened but cannot be confirmed. Stop. A call that
-  returned nothing yielded no `uploadId` to read back, so with no idempotency
-  key, retrying could duplicate a live post.
+  submission could have happened but cannot be confirmed. With no idempotency
+  key, retrying could duplicate a live post. Look for it with
+  `social_list_uploads`, setting `from`/`to` to cover the attempt (the default
+  window starts now), and match the content and platform; report an upload you
+  find. Finding none still does not authorize a retry on its own.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
@@ -43,6 +45,9 @@ error-code catalogue.
   main preview because the payload changed.
 - **Metadata or media rejected:** correct only what the live guidance and
   returned failure identify, then return to the main preview and confirmation.
+  An image rejected for size, format, or readiness needs a different image.
+- **Connection invalid (`INVALID_TOKEN`, `UNAUTHORIZED`):** offer to reconnect;
+  the main routing table's accounts row covers it.
 - **YouTube copyright / Content-ID signal:** use video-editing's
   `editing_get_export_publish_data` to inspect the edit's media and surface a
   flagged match instead of retrying over it.

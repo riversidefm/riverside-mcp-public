@@ -16,8 +16,8 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
 - **`SCHEDULED`** — report `scheduledAt` and stop the conversation.
 - **`COMPLETED`** — report the outcome, but no URL: this tool cannot return or
   construct one.
-- **Connection expired, `scheduledAt` set** — reconnect, never republish, then
-  re-read. The returned `reason` says which recovery applies: a `scheduledAt`
+- **Connection expired, `scheduledAt` set** — offer
+  `social_connect_social_account`, never republish, then re-read. The returned `reason` says which recovery applies: a `scheduledAt`
   still ahead resumes on its own, a past-due one only if the user accepts the
   web app's post-reconnect prompt.
 - **Connection expired, no `scheduledAt`** — terminal, nothing was posted.
@@ -25,12 +25,14 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
 - **`UNKNOWN` or a missing failure category** — this cannot prove whether a
   post exists. Do not republish until the platform or Riverside Support
   verifies the outcome. Never treat every `FAILED` upload as no post.
-- **Any other `FAILED`** — it can be rescheduled or republished in place from
-  the Riverside web app, whatever the `reasonCode`. Re-read the status first
-  and confirm it is still `FAILED`; never create a second MCP upload.
+- **Any other `FAILED`** — it can be rescheduled or republished in place with
+  `social_update_upload` or from the Riverside web app, whatever the
+  `reasonCode`. Re-read the full upload with `social_get_upload` first: it must
+  still be `FAILED` with `editable` true. Then show the preview again and get a
+  new confirmation; never create a second upload.
 
 Relay the bounded Riverside-authored `reason`, not raw/internal text. This tool
-only reads: it cannot cancel, edit, unpublish, or retry.
+only reads.
 
 ## Fields and access
 

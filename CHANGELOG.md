@@ -24,6 +24,52 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.8.0] - 2026-10-02
+
+Teaches social-publishing to post an image from the user's disk, set a custom
+thumbnail, and publish a caption-only post. The tools grew these arguments in
+riversidefm/social-platform (SL-1291, SL-1292); this release is the skill side.
+It also brings the skill up to the social tools the gateway already serves and
+to the rules Riverside's own Publisher agent follows.
+
+- **New reference `skills/social-publishing/references/bring-your-own-image.md`**
+  and a routing row for it. It carries the three-call upload
+  (`media_create_media_upload`, `curl -T`, `media_finalize_media_upload`), the
+  one-time network approval each client asks for on the `curl` step (Claude
+  Code's domain prompt, Codex's on-request approval or `network_access`,
+  Cursor's run-outside-sandbox approval or `sandbox.json`), and which argument
+  the resulting `mediaId` goes into: `assets` for an image post,
+  `thumbnailMediaId` for a YouTube, Instagram or Facebook video post, nothing
+  for a caption-only post. It also says the image is not visible to the model.
+- **Post management, accounts and reporting.** Two new references cover the
+  seven social tools the skill never routed to: finding, changing,
+  rescheduling and cancelling a post before it publishes
+  (`managing-posts.md`), and connecting or disconnecting an account and
+  reading a published post's numbers (`accounts-and-reporting.md`). The
+  entrypoint no longer claims the MCP cannot cancel or edit a post; a
+  published post still cannot be changed here.
+- **Cover frames.** `cover-frame.md` covers an Instagram or TikTok cover taken
+  from the video: both fields in milliseconds from the start of the published
+  clip or edit, the moment located with `editing_read_aligned_transcript`, and
+  never picked silently.
+- **Publisher rules carried over:** re-read an edit before every publish; keep
+  a YouTube title and description separate; media on a scheduled post can be
+  swapped but a video never removed; offer reconnecting instead of the web app;
+  look for a post with `social_list_uploads` after an unknown outcome, which
+  still never authorizes a retry by itself; republish a failed post in place.
+- **video-editing no longer says uploading is impossible.** Its two "not part of
+  this skill" sentences now name the `media_` tools instead.
+- Every write is still confirmed once per target, and the full seven-reference
+  fan-out ceiling in `tests/test_progressive_disclosure.py` moves from 16 000
+  to 22 000 bytes; every one-reference route stays under the 9 855-byte
+  baseline.
+- **Three rules ported from the Publisher after review (SL-1320, SL-1327,
+  SL-1331):** check an image's size against each destination's cap before
+  uploading it and ask for another image instead of drafting; a video on a
+  scheduled post swaps only for an exported or exporting clip, and a refusal
+  means "export it first", never a new post; a Facebook image goes to the Page
+  feed, not a Reel; "under N" means fewer than N when counting copy.
+
 ## [0.7.1] - 2026-09-28
 
 Stops sending agents to export tools the server no longer serves (EB-1254).
