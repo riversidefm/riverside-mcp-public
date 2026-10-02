@@ -71,7 +71,8 @@ read any newly matching reference before the next workflow call.
    `accounts: []` is an ambiguous lookup failure: retry once, then report it and
    stop. A platform that is not connected routes to Accounts and reporting.
 3. **Load live rules and compose.** Call `social_get_publishing_guidelines`
-   for the platform and follow its counting rules. Never infer or default
+   for the platform and follow its counting rules; under N means fewer than
+   N. Never infer or default
    YouTube privacy; ask. A YouTube title and description are separate fields:
    never copy one into the other; when the user names one, draft the other from
    the source and show both. Before a YouTube upload,

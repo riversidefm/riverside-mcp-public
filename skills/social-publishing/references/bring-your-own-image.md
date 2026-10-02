@@ -11,8 +11,13 @@ read `social_upload_create` for the exact arguments before composing.
 The social tools take a `mediaId`, never a path or a URL. Get one in three
 calls, all with the user's `productionId` and `studioId`:
 
-1. `stat` the file for its byte size. JPEG or PNG only; Instagram accepts
-   JPEG only; a thumbnail must be at most 2 MB.
+1. `stat` the file for its byte size and check it against every selected
+   destination before uploading: JPEG or PNG only, Instagram JPEG only, and
+   the per-platform image cap `social_get_publishing_guidelines` returns (at
+   the time of writing X 5 MB, Instagram 8 MB, Facebook 10 MB, LinkedIn none,
+   any thumbnail 2 MB). When a destination rejects the file, say which one and
+   why and ask for a smaller, resized, or converted image instead of drafting
+   the post. The backend checks size and format again on publish.
 2. `media_create_media_upload` with `fileName`, `mimeType`, `fileSizeBytes`.
    It returns a `mediaId` and an `uploadUrl`.
 3. `curl --fail-with-body -T "<path>" -H "Content-Type: <mimeType>"
@@ -46,6 +51,7 @@ domain that needs allowing.
 ## Then publish
 
 - **Image post**: `assets: [{ mediaId }]` and no `clipId`. One image per post.
+  A Facebook image publishes to the Page feed, not as a Reel.
 - **Thumbnail**: `thumbnailMediaId` on a `clipId` video post to
   YouTube, Instagram or Facebook. Never together with `assets`, and never with
   Instagram's `thumbnailOffset`.

@@ -25,7 +25,10 @@ from the returned result.
 - **Timing:** `scheduledAt` moves the post and must be in the future;
   `publishNow` posts at once and cannot be undone. Never both.
 - **Media:** only while `mediaEditable` is true. `clipId` swaps the video for
-  another clip or edit; a video can be swapped, never removed. `assets`
+  another clip or edit that is already exported or exporting; a video can be
+  swapped, never removed. If the tool reports the replacement is not exported
+  yet, tell the user to export it first; never create a new post in its
+  place. `assets`
   replaces the image set; `[]` drops images only where the platform takes
   caption-only posts. A video post never becomes an image post, nor the
   reverse. Say so when the user asks to remove media that cannot go.
