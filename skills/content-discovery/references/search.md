@@ -3,10 +3,10 @@
 Finding content by what was said in it, or by its title or topic, rather than by
 where it lives.
 
-**Every number is deliberately absent from this file** — the recency window,
-result and highlight caps, page size, next-page token, and which fields are
-required or explicitly null all come from the live schema of the tool you are
-calling, never from a remembered figure. The main skill file's rules govern what
+**Service limits and requiredness come from the live schema** — the recency
+window, result and highlight caps, page size, next-page token, and which fields
+are required or explicitly null all come from the tool you are calling, never
+from a remembered figure. The main skill file's rules govern what
 you do with the results. This file covers only the choices those sources cannot
 make for you.
 
@@ -37,6 +37,30 @@ know when it was recorded — pass an explicit `createdAfterDate` covering the
 whole period the user means. Check the schema for the current default before
 concluding it is wide enough.
 
+## Duration constraints
+
+When the user requests a clip or take duration, use `search_riverside` with
+`filters[].durationRange` **only if the live input schema exposes it**. It
+filters server-side before pagination. Use uppercase `CLIP` or
+`TAKE`; `PROJECT` ranges are invalid. Keep the required nullable `field` and
+`value`; a duration-only filter for clips lasting at least one minute is:
+
+```json
+{"entity":"CLIP","field":null,"value":null,"durationRange":{"min":60}}
+```
+
+Bounds are inclusive seconds: `min`, `max`, or both. Omitted or null individual
+bounds are unbounded; at least one must be a finite nonnegative number, and
+`min <= max` when both are set. Repeat the same filters with each
+`nextSearchAfter` token. Filtering one returned page cannot establish all
+qualifying matches or their absence.
+
+If the live schema lacks the range or cannot express a requested scope, use
+existing in-scope hierarchy traversal or report the limitation; never send
+unsupported fields or drop a requested constraint. The exact transcript tool
+has no duration-range argument. Any duration check after exact search is a
+post-query check, not a complete search filtered by duration before pagination.
+
 ## What comes back, and where it goes
 
 Inspect the live response for compact evidence and bridge ids. Use any returned
@@ -51,14 +75,17 @@ then carry forward only identifiers whose meaning the response establishes:
 Use the live response and tool descriptions to decide whether a deeper
 transcript read is needed; search evidence is not cut-grade timing.
 
+Raw search result `duration` remains milliseconds for clips and seconds for
+takes. Convert units when displaying or comparing; range bounds are seconds.
+
 ## When nothing comes back
 
 Widen only within the scope the user requested. Preserve every studio, project,
-recording, or other entity they explicitly named; remove only filters they did
-not supply, try the fuzzy tool if you used the exact one, and loosen or extend
-`createdAfterDate` when the requested time range permits it. If no in-scope
-match remains, report that or ask permission before searching outside the
-requested scope. Walk the hierarchy within the same scope when search fails.
+recording, entity, and duration restriction they explicitly supplied; remove
+only filters they did not supply, try the fuzzy tool if you used the exact one,
+and loosen or extend `createdAfterDate` when the requested time range permits
+it. If no in-scope match remains, report that or ask permission before searching
+outside the requested scope. Walk the hierarchy within the same scope when search fails.
 
 ## Worked example — "find the episode where I talked about fundraising"
 

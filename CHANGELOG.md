@@ -24,6 +24,15 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.7.2] - 2026-10-16
+
+Corrects content discovery guidance for requested clip and take durations.
+
+- Use server-side duration ranges only when the live search schema supports
+  them; preserve requested scope and filters across pagination and fallback.
+- Clarify inclusive seconds-based bounds, required nullable filter fields,
+  exact transcript search limitations, and the raw clip/take duration units.
+
 ## [0.7.1] - 2026-09-28
 
 Stops sending agents to export tools the server no longer serves (EB-1254).
