@@ -81,9 +81,14 @@ their times and let the user choose.
 
 ## Getting a rendered file
 
-No tool returns a download link. `exports_create_export` renders an edit and
-`exports_get_export` reports that render's status, but its `s3Key` is a storage
-key, not a URL, and there is no tool that lists an edit's existing exports.
+No tool returns a download link. `exports_create_export` renders an edit,
+`exports_list_edit_exports` lists an edit's exports newest first with each one's
+`status`, and `exports_get_export` reads one export by id. An export's `s3Key`
+is a storage key, not a URL.
+
+The list comes back in one response, without pages, and leaves deleted exports
+out. An empty list is inconclusive: an unknown edit id also returns one, and
+older exports may be missing. Never re-export only because the list is empty.
 
 When the user wants the file, resolve the edit as below and give them its
 `riversideUrl` from `platform_get_edit` so they can export or download it in the
@@ -95,7 +100,9 @@ editor:
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. Share that edit's `riversideUrl`. Do not construct a download URL from an
+3. `exports_list_edit_exports` for that edit, to tell the user whether a
+   `COMPLETED` export exists and when it was made.
+4. Share that edit's `riversideUrl`. Do not construct a download URL from an
    export's `s3Key`.
 
 ## Transcripts: prose here, cut-grade elsewhere

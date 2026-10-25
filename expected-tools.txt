@@ -65,6 +65,12 @@
 #   left the platform backend on 2026-08-25 (platform-mcp#63); exports now live
 #   in the `exports_` namespace, which has no list tool and returns no download
 #   link. `media_` tools use underscores, not hyphens.
+#
+# ADDED: 2026-10-25 — `exports_list_edit_exports` (69 tools; exports_ 2 -> 3).
+#   Listed ahead of the live surface, not from a tools/list capture:
+#   riversidefm/editing-service#980 adds it, and this gate fails any tool name
+#   a skill mentions and this list omits. Merge only after the gateway serves
+#   the name. Name-for-name addition only; nothing else was re-verified.
 
 editing_add_lower_third
 editing_add_text_overlay
@@ -106,6 +112,7 @@ editing_set_visual_crop
 editing_validate_edit_plan
 exports_create_export
 exports_get_export
+exports_list_edit_exports
 media_create_media_upload
 media_finalize_media_upload
 media_get_media
