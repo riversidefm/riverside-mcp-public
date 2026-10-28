@@ -24,6 +24,17 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.8.0] - 2026-10-25
+
+Exports can be listed per edit.
+
+- Content discovery uses the new `exports_list_edit_exports`: an edit's
+  exports, newest first, with status, rendered revision and storage keys, in
+  one response. "Getting a rendered file" now checks for a `COMPLETED` export
+  before sending the user to the edit's `riversideUrl`.
+- An empty list is treated as inconclusive, never as a reason to re-export.
+- There is still no download link.
+
 ## [0.7.2] - 2026-10-16
 
 Corrects content discovery guidance for requested clip and take durations.

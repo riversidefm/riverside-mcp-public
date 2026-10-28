@@ -31,8 +31,9 @@ Which id crosses into another skill:
   start from an existing project edit instead of assuming the ids coincide.
 - **`editId`** — one cut of one or more recordings. Social publishing consumes
   it as the `clipId`.
-- **`exportId`** — one rendered file. No tool returns its download link; send
-  the user to the edit's `riversideUrl` instead.
+- **`exportId`** — one rendered file. `exports_list_edit_exports` lists an
+  edit's exports. No tool returns a download link; send the user to the edit's
+  `riversideUrl` instead.
 
 ## Where to read next
 
