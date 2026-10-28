@@ -66,11 +66,10 @@
 #   in the `exports_` namespace, which has no list tool and returns no download
 #   link. `media_` tools use underscores, not hyphens.
 #
-# ADDED: 2026-10-25 — `exports_list_edit_exports` (69 tools; exports_ 2 -> 3).
-#   Listed ahead of the live surface, not from a tools/list capture:
-#   riversidefm/editing-service#980 adds it, and this gate fails any tool name
-#   a skill mentions and this list omits. Merge only after the gateway serves
-#   the name. Name-for-name addition only; nothing else was re-verified.
+# ADDED: 2026-10-28 — `exports_list_edit_exports` (69 tools; exports_ 2 -> 3).
+#   riversidefm/editing-service#980 added it. Confirmed live by an authenticated
+#   tools/call on the production endpoint, not by a full tools/list capture.
+#   Name-for-name addition only; nothing else was re-verified.
 
 editing_add_lower_third
 editing_add_text_overlay
