@@ -87,9 +87,9 @@ No tool returns a download link. `exports_create_export` renders an edit,
 is a storage key, not a URL.
 
 The list comes back in one response, without pages, and leaves deleted exports
-out. An empty list is inconclusive: an unknown edit id also returns an empty
-list, and older exports may be missing. Never re-export only because the list
-is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
+out. It can omit older exports, so even a non-empty list may not be complete.
+An empty list is inconclusive: an unknown edit id also returns an empty list.
+Never re-export only because the list is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
 an empty list.
 
 When the user wants the file, resolve the edit as below and give them its
