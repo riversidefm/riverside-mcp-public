@@ -1,7 +1,7 @@
 # Hierarchy navigation
 
 Browsing the hierarchy, determining which item is newest, paging a list to
-completeness, and getting a download link.
+completeness, and getting a rendered file.
 
 Page sizes, offsets, limits, paged-response and continuation shapes, and which
 fields are required or nullable come from the live schema of the tool you are
