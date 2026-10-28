@@ -89,7 +89,8 @@ is a storage key, not a URL.
 The list comes back in one response, without pages, and leaves deleted exports
 out. An empty list is inconclusive: an unknown edit id also returns an empty
 list, and older exports may be missing. Never re-export only because the list
-is empty.
+is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
+an empty list.
 
 When the user wants the file, resolve the edit as below and give them its
 `riversideUrl` from `platform_get_edit` so they can export or download it in the
@@ -102,8 +103,9 @@ editor:
    several do, show their available identifying details and wait for the user
    to select the edit.
 3. `exports_list_edit_exports` for that edit. If a `COMPLETED` export is
-   listed, tell the user when it was made; if none is, say the result is
-   inconclusive rather than that the edit has no finished export.
+   listed, tell the user when it was made; otherwise report the `PENDING` or
+   `FAILED` exports that are listed. If the list is empty, say the result is
+   inconclusive rather than that the edit was never exported.
 4. Share that edit's `riversideUrl`. Do not construct a download URL from an
    export's `s3Key`.
 
