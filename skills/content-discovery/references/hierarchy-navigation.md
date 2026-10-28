@@ -100,8 +100,9 @@ editor:
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. `exports_list_edit_exports` for that edit, to tell the user whether a
-   `COMPLETED` export exists and when it was made.
+3. `exports_list_edit_exports` for that edit. If a `COMPLETED` export is
+   listed, tell the user when it was made; if none is, say the result is
+   inconclusive rather than that the edit has no finished export.
 4. Share that edit's `riversideUrl`. Do not construct a download URL from an
    export's `s3Key`.
 
