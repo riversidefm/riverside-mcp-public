@@ -87,8 +87,9 @@ No tool returns a download link. `exports_create_export` renders an edit,
 is a storage key, not a URL.
 
 The list comes back in one response, without pages, and leaves deleted exports
-out. An empty list is inconclusive: an unknown edit id also returns one, and
-older exports may be missing. Never re-export only because the list is empty.
+out. An empty list is inconclusive: an unknown edit id also returns an empty
+list, and older exports may be missing. Never re-export only because the list
+is empty.
 
 When the user wants the file, resolve the edit as below and give them its
 `riversideUrl` from `platform_get_edit` so they can export or download it in the
