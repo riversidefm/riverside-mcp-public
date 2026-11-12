@@ -24,6 +24,45 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.9.0] - 2026-11-12
+
+Brings social-publishing level with what Riverside's own Marketer agent can do
+in a text chat. The plugin already received all 11 `social_` tools from the
+server; the skill still told agents there was no cancel or edit, so they
+avoided them.
+
+- **Post management, accounts and reporting.** New references route to the
+  seven social tools the skill never used: finding, changing, rescheduling and
+  cancelling a post before it publishes, and removing a failed post that never
+  went live (`managing-posts.md`); connecting a first or second account and
+  reading a post's numbers (`accounts-and-reporting.md`). A cancelled post
+  reads back as deleted. A published post still cannot be changed here.
+- **Images and caption-only posts** (`images.md`). An image post, or a custom
+  thumbnail on a YouTube, Instagram or Facebook video, takes an image already
+  in the user's Riverside media library, found with `media_list_media`. The
+  skill does not upload files from the user's computer; it asks the user to
+  add the image in Riverside first.
+- **Cover frames** (`cover-frame.md`) for Instagram and TikTok, in
+  milliseconds from the start of the published clip or edit, never picked
+  silently.
+- **Finding the clip by what was said** (`finding-the-clip.md`): search, then
+  the recording's own edits and their transcripts; a recording is never the
+  post.
+- **When to post** (`when-to-post.md`). Suggests a strong slot per platform in the audience's
+  local time when the user asks or gives a date without a time. Scheduling
+  now says a post goes out within 5 minutes of its time.
+- **Composing:** X threads and LinkedIn first comments go in the same create
+  call and confirmation, never added afterwards.
+- **Publisher rules carried over:** re-read an edit before every publish; keep
+  a YouTube title and description separate; media on a scheduled post can be
+  swapped for an exported clip but a video never removed; offer reconnecting
+  instead of the web app; after an unknown outcome, read the returned
+  `uploadId` or look for the post, which never authorizes a retry by itself;
+  republish a failed post in place.
+- The full nine-reference fan-out ceiling in
+  `tests/test_progressive_disclosure.py` is raised; every one-reference route
+  stays under the 9 855-byte baseline.
+
 ## [0.8.0] - 2026-10-25
 
 Exports can be listed per edit.

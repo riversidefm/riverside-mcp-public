@@ -35,3 +35,8 @@ compose settings.
 - Pass the selected choices to the main workflow so its preview covers both the
   export and the post. A later material change requires a new preview and
   confirmation there.
+
+## A scheduled post is not to the minute
+
+A scheduled post goes out within 5 minutes after `scheduledAt`. Say "around"
+the time, never "at exactly".
