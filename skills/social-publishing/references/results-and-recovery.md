@@ -15,9 +15,10 @@ main safety contract still governs every follow-up.
   it with `social_get_upload` and `social_get_upload_status` first. Otherwise
   look for it with `social_list_uploads`, setting `from`/`to` to cover both
   the attempt and any requested `scheduledAt` (the default window starts now).
-  Rows show no account: read each candidate with `social_get_upload` to
-  compare account and schedule. Report an upload only when exactly one matches; otherwise say the
-  outcome is still ambiguous. Finding none never authorizes a retry by itself.
+  Rows show no account: read each candidate with `social_get_upload`. Only
+  when exactly one matches content, platform, account and schedule, report it
+  as the likely result; otherwise the outcome is still ambiguous. Finding none
+  never authorizes a retry by itself.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
