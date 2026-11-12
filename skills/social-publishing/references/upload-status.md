@@ -30,7 +30,7 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
   `social_update_upload` or from the Riverside web app, whatever the
   `reasonCode`. Re-read the full upload with `social_get_upload` first: it must
   still be `FAILED` with `editable` true. If `cancellable` is false, part of
-  it went live, and publishing again can duplicate that part: say so before
+  it may have gone live, and publishing again can duplicate it: say so before
   offering it. Then show the preview again and get a new confirmation; never
   create a second upload.
 

@@ -29,4 +29,6 @@ their audience is elsewhere. With neither, ask once where most of their
 audience is. A country with several time zones uses its most populous one
 (Eastern for the US and Canada). The slot is a time in the audience's zone:
 carry that zone into scheduling instead of re-reading the hour in the user's
-zone, and show both, e.g. "Tuesday at 10 AM your time (1 PM Eastern)".
+zone, and show both, e.g. "Tuesday at 10 AM your time (1 PM Eastern)". If that lands on
+another day for the user than the one they asked for, say so and ask which
+day to keep.
