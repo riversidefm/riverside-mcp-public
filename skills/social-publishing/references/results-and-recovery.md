@@ -15,10 +15,10 @@ contract still governs every follow-up here.
   submission could have happened but cannot be confirmed. With no idempotency
   key, retrying could duplicate a live post. If an `uploadId` came back, read
   it with `social_get_upload` and `social_get_upload_status` first. Otherwise
-  look for it with
-  `social_list_uploads`, setting `from`/`to` to cover the attempt (the default
-  window starts now), and match the content and platform; report an upload you
-  find. Finding none still does not authorize a retry on its own.
+  look for it with `social_list_uploads`, setting `from`/`to` to cover both
+  the attempt and any requested `scheduledAt` (the default window starts now),
+  and match the content, platform and account. Report an upload only when
+  exactly one matches; otherwise say the outcome is still ambiguous. Finding none still does not authorize a retry on its own.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.

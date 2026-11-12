@@ -27,4 +27,6 @@ The audience's location comes from what the user said, otherwise from their
 time zone; say the slot is based on it and that they can tell you if most of
 their audience is elsewhere. With neither, ask once where most of their
 audience is. A country with several time zones uses its most populous one
-(Eastern for the US and Canada).
+(Eastern for the US and Canada). The slot is a time in the audience's zone:
+carry that zone into scheduling instead of re-reading the hour in the user's
+zone, and show both, e.g. "Tuesday at 10 AM your time (1 PM Eastern)".

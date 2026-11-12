@@ -18,7 +18,8 @@ look it up.
 4. Several match: list each with its title (or its length and creation date)
    and the line where it is said, and ask which one. Exactly one matches: name
    it and continue with it.
-5. None match: say so in one sentence and offer to make a clip from that
+5. None match: say none of the edits you read match. If you skipped older
+   edits, offer to read those first. Otherwise offer to make a clip from that
    recording (see video-editing). Never offer the recording, or a new
    full-length edit of it, as the post.
 

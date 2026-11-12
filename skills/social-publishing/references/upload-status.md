@@ -17,9 +17,10 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
 - **`COMPLETED`** — report the outcome, but no URL: this tool cannot return or
   construct one.
 - **Connection expired, `scheduledAt` set** — offer
-  `social_connect_social_account`, never republish, then re-read. The returned `reason` says which recovery applies: a `scheduledAt`
-  still ahead resumes on its own, a past-due one only if the user accepts the
-  web app's post-reconnect prompt.
+  `social_connect_social_account`, never republish, and re-read only after the
+  user says they approved on the platform's page. The returned `reason` says
+  which recovery applies: a `scheduledAt` still ahead resumes on its own, a
+  past-due one only if the user accepts the web app's post-reconnect prompt.
 - **Connection expired, no `scheduledAt`** — terminal, nothing was posted.
   Reconnect before any new publish and follow the returned `reason`.
 - **`UNKNOWN` or a missing failure category** — this cannot prove whether a
@@ -28,8 +29,10 @@ terminal. `FAILED` is terminal except `PLATFORM_CONNECTION_EXPIRED` with a
 - **Any other `FAILED`** — it can be rescheduled or republished in place with
   `social_update_upload` or from the Riverside web app, whatever the
   `reasonCode`. Re-read the full upload with `social_get_upload` first: it must
-  still be `FAILED` with `editable` true. Then show the preview again and get a
-  new confirmation; never create a second upload.
+  still be `FAILED` with `editable` true. If `cancellable` is false, part of
+  it went live, and publishing again can duplicate that part: say so before
+  offering it. Then show the preview again and get a new confirmation; never
+  create a second upload.
 
 Relay the bounded Riverside-authored `reason`, not raw/internal text. This tool
 only reads.
