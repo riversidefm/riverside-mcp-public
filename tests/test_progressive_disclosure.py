@@ -90,9 +90,10 @@ class ProgressiveDisclosureContextTests(unittest.TestCase):
         The status capability can make a legitimate multi-reference route
         larger than the PR #9 monolith. Ordinary zero- and one-reference
         routes must still save bytes, while all nine references remain under
-        an explicit reviewed ceiling. The ceiling moved when post management,
-        accounts and reporting, cover frames and finding the clip and when to post joined in
-        0.9.0; a request matching every row is not a realistic route.
+        an explicit reviewed ceiling. The ceiling moved in 0.9.0, when post
+        management, accounts and reporting, images, cover frames, finding the
+        clip, and when to post joined; a request matching every row is not a
+        realistic route.
         """
         entrypoint = (SKILLS / "social-publishing" / "SKILL.md").stat().st_size
         references = sorted(

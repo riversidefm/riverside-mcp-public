@@ -48,8 +48,9 @@ avoided them.
 - **Finding the clip by what was said** (`finding-the-clip.md`): search, then
   the recording's own edits and their transcripts; a recording is never the
   post.
-- **When to post** (`when-to-post.md`). Suggests a strong slot per platform in the audience's
-  local time when the user asks or gives a date without a time. Scheduling
+- **When to post** (`when-to-post.md`). Suggests a strong slot per platform
+  in the audience's local time when the user asks or gives a date without a
+  time. Scheduling
   now says a post goes out within 5 minutes of its time.
 - **Composing:** X threads and LinkedIn first comments go in the same create
   call and confirmation, never added afterwards.

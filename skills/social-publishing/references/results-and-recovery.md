@@ -14,21 +14,22 @@ main safety contract still governs every follow-up.
   key, retrying could duplicate a live post. If an `uploadId` came back, read
   it with `social_get_upload` and `social_get_upload_status` first. Otherwise
   look for it with `social_list_uploads`, setting `from`/`to` to cover both
-  the attempt and any requested `scheduledAt` (the default window starts now),
-  and match the content, platform, account and any requested `scheduledAt`. Report an upload only when
-  exactly one matches; otherwise say the outcome is still ambiguous. Finding none still does not authorize a retry on its own.
+  the attempt and any requested `scheduledAt` (the default window starts now).
+  Rows show no account: read each candidate with `social_get_upload` to
+  compare account and schedule. Report an upload only when exactly one matches; otherwise say the
+  outcome is still ambiguous. Finding none never authorizes a retry by itself.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
 
 ## Retry gate
 
-This gate governs a second `social_upload_create`. Republishing a `FAILED`
-upload in place follows Publish outcome. A retry is admissible only when both the returned failure and current
-`social_get_publishing_guidelines` recovery guidance explicitly establish that
-no post was created and that retrying this failure is safe. Never retry a
-success, processing result, partial or ambiguous result, timeout, transport
-failure, or unknown outcome.
+This gate governs a second `social_upload_create`; republishing a `FAILED`
+upload in place follows Publish outcome. A retry is admissible only when the
+returned failure and current `social_get_publishing_guidelines` guidance
+explicitly establish that no post was created and that retrying is safe.
+Never retry a success, processing result, partial or ambiguous result,
+timeout, transport failure, or unknown outcome.
 
 Passing this gate makes a retry eligible; it does not authorize the call. Return
 to the main preview and obtain the required new confirmation, whether or not the
@@ -47,8 +48,8 @@ error-code catalogue.
 - **Metadata or media rejected:** correct only what the live guidance and
   returned failure identify, then return to the main preview and confirmation.
   An image rejected for size, format, or readiness needs a different image.
-- **Connection invalid (`INVALID_TOKEN`, `UNAUTHORIZED`):** offer to reconnect;
-  the main routing table's accounts row covers it.
+- **Connection invalid (`INVALID_TOKEN`, `UNAUTHORIZED`):** offer to reconnect
+  (Accounts and reporting).
 - **YouTube copyright / Content-ID signal:** use video-editing's
   `editing_get_export_publish_data` to inspect the edit's media and surface a
   flagged match instead of retrying over it.

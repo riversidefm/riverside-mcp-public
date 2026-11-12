@@ -44,7 +44,8 @@ Returns `uploadId`, `platform`, `status`, `terminal`, `scheduledAt`,
 and no post identifier beyond the platform's own `externalId`.
 A cancelled upload is not an error: it returns `deleted: true` and
 `deletedAt`, so say it was cancelled and when. Unknown, foreign-account, and
-inaccessible production-scoped uploads share one authorization error. Report the upload as unreadable, not nonexistent;
+inaccessible production-scoped uploads share one authorization error. Report
+the upload as unreadable, not nonexistent;
 readability does not prove who published it.
 
 For account correlation, strip `_SHORTS` from upper-snake `platform`, then

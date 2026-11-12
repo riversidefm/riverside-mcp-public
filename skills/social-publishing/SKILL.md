@@ -37,9 +37,10 @@ memory or values copied into this file.
 
 ## Prerequisites
 
-- A `studioId`, and for listing posts or connecting accounts a `productionId`
-  and `studioSlug`: content-discovery finds them (`platform_list_studios`,
-  `platform_get_studio`, `platform_list_productions`).
+- A `studioId`; a `productionId` to list posts, find library images, or
+  connect or disconnect an account; and the `studioSlug` to connect one.
+  Content-discovery finds them (`platform_list_studios`, `platform_get_studio`,
+  `platform_list_productions`).
 - What to post: a `clipId` (a clip id, or an edit id passed unchanged), a
   `mediaId` for an image already in the user's Riverside media library, or
   nothing for a caption-only post. This skill never uploads a file from the
@@ -70,13 +71,12 @@ read any newly matching reference before the next workflow call.
 1. **Establish the studio.** If several studios fit, ask the user to choose.
 2. **Select the account.** Call `social_get_connected_platforms(studioId)`.
    Use the account's `platformAccountId`; if several fit, ask by name. Never
-   publish without one. An empty
-   `accounts: []` is an ambiguous lookup failure: retry once, then report it and
-   stop. A platform that is not connected routes to Accounts and reporting.
+   publish without one. An empty `accounts: []` is an ambiguous lookup
+   failure: retry once, then report it and stop. A platform that is not
+   connected routes to Accounts and reporting.
 3. **Load live rules and compose.** Call `social_get_publishing_guidelines`
-   for the platform and follow its counting rules; under N means fewer than
-   N. Never infer or default
-   YouTube privacy; ask. A YouTube title and description are separate fields:
+   for the platform and follow its counting rules; a limit of "under N"
+   means fewer than N. Never infer or default YouTube privacy; ask. A YouTube title and description are separate fields:
    never copy one into the other; when the user names one, draft the other from
    the source and show both. Before a YouTube upload,
    `editing_get_export_publish_data` reports copyright / Content-ID signals;
