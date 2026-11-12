@@ -9,7 +9,8 @@ user named a future or wall-clock time or the clip may require
 The user means a local wall-clock time, not UTC, when they say "tomorrow at
 9", "Friday morning", or "the 20th at noon".
 
-1. Use the user's stated or configured timezone. If neither is available, ask;
+1. Use the user's stated or configured timezone; a slot from When to post
+   keeps the audience's zone it was chosen in. If neither is available, ask;
    do not assume UTC, your timezone, or the studio's timezone.
 2. Resolve relative dates in that timezone. Require one unique local instant:
    if daylight saving makes the requested time nonexistent or makes it occur
@@ -35,3 +36,8 @@ compose settings.
 - Pass the selected choices to the main workflow so its preview covers both the
   export and the post. A later material change requires a new preview and
   confirmation there.
+
+## A scheduled post is not to the minute
+
+A scheduled post goes out within 5 minutes after `scheduledAt`. Say "around"
+the time, never "at exactly".

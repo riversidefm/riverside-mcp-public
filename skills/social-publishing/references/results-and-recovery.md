@@ -1,9 +1,7 @@
 # Results and recovery
 
-Outcome interpretation, retry admissibility, and error-specific recovery after a
-publish is processing, partial, or failed, or after a timeout, transport failure,
-missing result, or any other unknown outcome. The main skill file's safety
-contract still governs every follow-up here.
+For a publish that is processing, partial, failed, or of unknown outcome. The
+main safety contract still governs every follow-up.
 
 ## Classify the outcome
 
@@ -12,20 +10,27 @@ contract still governs every follow-up here.
   user-facing message when present; do not expose a raw internal status or
   resend the call.
 - **Timeout, transport failure, missing response, or unknown result:** say that
-  submission could have happened but cannot be confirmed. Stop. A call that
-  returned nothing yielded no `uploadId` to read back, so with no idempotency
-  key, retrying could duplicate a live post.
+  submission could have happened but cannot be confirmed. With no idempotency
+  key, retrying could duplicate a live post. If an `uploadId` came back, read
+  it with `social_get_upload` and `social_get_upload_status` first. Otherwise
+  look for it with `social_list_uploads`, setting `from`/`to` to cover both
+  the attempt and any requested `scheduledAt` (the default window starts now).
+  Rows show no account: read each candidate with `social_get_upload`. Only
+  when exactly one matches content, platform, account and schedule, report it
+  as the likely result; otherwise the outcome is still ambiguous. Finding none
+  never authorizes a retry by itself.
 - **Explicit per-target failure:** fetch fresh platform guidance and evaluate
   the retry gate below. A failure on one target does not undo or change another
   target's result.
 
 ## Retry gate
 
-A retry is admissible only when both the returned failure and current
-`social_get_publishing_guidelines` recovery guidance explicitly establish that
-no post was created and that retrying this failure is safe. Never retry a
-success, processing result, partial or ambiguous result, timeout, transport
-failure, or unknown outcome.
+This gate governs a second `social_upload_create`; republishing a `FAILED`
+upload in place follows Publish outcome. A retry is admissible only when the
+returned failure and current `social_get_publishing_guidelines` guidance
+explicitly establish that no post was created and that retrying is safe.
+Never retry a success, processing result, partial or ambiguous result,
+timeout, transport failure, or unknown outcome.
 
 Passing this gate makes a retry eligible; it does not authorize the call. Return
 to the main preview and obtain the required new confirmation, whether or not the
@@ -43,6 +48,9 @@ error-code catalogue.
   main preview because the payload changed.
 - **Metadata or media rejected:** correct only what the live guidance and
   returned failure identify, then return to the main preview and confirmation.
+  An image rejected for size, format, or readiness needs a different image.
+- **Connection invalid (`INVALID_TOKEN`, `UNAUTHORIZED`):** offer to reconnect
+  (Accounts and reporting).
 - **YouTube copyright / Content-ID signal:** use video-editing's
   `editing_get_export_publish_data` to inspect the edit's media and surface a
   flagged match instead of retrying over it.
