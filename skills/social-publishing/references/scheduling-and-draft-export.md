@@ -9,7 +9,8 @@ user named a future or wall-clock time or the clip may require
 The user means a local wall-clock time, not UTC, when they say "tomorrow at
 9", "Friday morning", or "the 20th at noon".
 
-1. Use the user's stated or configured timezone. If neither is available, ask;
+1. Use the user's stated or configured timezone; a slot from When to post
+   keeps the audience's zone it was chosen in. If neither is available, ask;
    do not assume UTC, your timezone, or the studio's timezone.
 2. Resolve relative dates in that timezone. Require one unique local instant:
    if daylight saving makes the requested time nonexistent or makes it occur

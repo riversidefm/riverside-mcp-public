@@ -1,9 +1,7 @@
 # Results and recovery
 
-Outcome interpretation, retry admissibility, and error-specific recovery after a
-publish is processing, partial, or failed, or after a timeout, transport failure,
-missing result, or any other unknown outcome. The main skill file's safety
-contract still governs every follow-up here.
+For a publish that is processing, partial, failed, or of unknown outcome. The
+main safety contract still governs every follow-up.
 
 ## Classify the outcome
 
@@ -25,7 +23,8 @@ contract still governs every follow-up here.
 
 ## Retry gate
 
-A retry is admissible only when both the returned failure and current
+This gate governs a second `social_upload_create`. Republishing a `FAILED`
+upload in place follows Publish outcome. A retry is admissible only when both the returned failure and current
 `social_get_publishing_guidelines` recovery guidance explicitly establish that
 no post was created and that retrying this failure is safe. Never retry a
 success, processing result, partial or ambiguous result, timeout, transport
