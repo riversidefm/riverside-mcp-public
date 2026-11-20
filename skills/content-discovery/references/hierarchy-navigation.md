@@ -81,10 +81,15 @@ their times and let the user choose.
 
 ## Getting a rendered file
 
-No tool returns a download link. `exports_create_export` renders an edit,
-`exports_list_edit_exports` lists an edit's exports newest first with each one's
-`status`, and `exports_get_export` reads one export by id. An export's `s3Key`
-is a storage key, not a URL.
+`exports_create_export` renders an edit, `exports_list_edit_exports` lists an
+edit's exports newest first with each one's `status`, and `exports_get_export`
+reads one export by id. Only `exports_get_export` returns a download link: for a
+`COMPLETED` export, `export.downloadUrl` is a signed HTTPS link that needs no
+auth header, and `export.downloadUrlExpiresAt` is when it stops working. That is
+at most an hour away and can be sooner, so go by the field, not by the hour.
+Both are null while the export is `PENDING` or `FAILED`. Every call returns a
+fresh link; never save one to reuse later. An export's `s3Key` is a storage key,
+not a URL.
 
 The list comes back in one response, without pages, and leaves deleted exports
 out. It can omit older exports, so even a non-empty list may not be complete.
@@ -92,9 +97,7 @@ An empty list is inconclusive: an unknown edit id also returns an empty list.
 Never re-export only because the list is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
 an empty list.
 
-When the user wants the file, resolve the edit as below and give them its
-`riversideUrl` from `platform_get_edit` so they can export or download it in the
-editor:
+When the user wants the file, resolve the edit and its export as below:
 
 1. Resolve the recording, confirm its `status`, and capture its `projectId`.
 2. `platform_get_project` — recordings and edits are siblings under a project,
@@ -102,12 +105,31 @@ editor:
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. `exports_list_edit_exports` for that edit. If a `COMPLETED` export is
-   listed, tell the user when it was made; otherwise report the `PENDING` or
-   `FAILED` exports that are listed. If the list is empty, say the result is
-   inconclusive rather than that the edit was never exported.
-4. Share that edit's `riversideUrl`. Do not construct a download URL from an
-   export's `s3Key`.
+3. `exports_list_edit_exports` for that edit. If the newest export is
+   `PENDING`, check it with `exports_get_export` a few times, about a minute
+   apart, until it is `COMPLETED` or `FAILED`. Then take the newest `COMPLETED`
+   export and tell the user when it was made. If the newest export is still
+   `PENDING`, say that render is still running and that the export you offer is
+   older, so it may not include later changes to the edit. If no export is
+   `COMPLETED`, report the `PENDING` or `FAILED` exports that are listed and go
+   to step 5. If the list is empty, say the result is inconclusive rather than
+   that the edit was never exported.
+4. `exports_get_export` for the `COMPLETED` export, then use its
+   `export.downloadUrl`:
+   - With a shell, download it: `curl -fsSL -o "<file>.mp4" "<downloadUrl>"`.
+     Use the extension the export's `s3Key` ends in (`.wav` or `.mp3` for an
+     audio export).
+   - Without one (claude.ai, ChatGPT), give the user the link and say when it
+     expires. Opening it saves the file under the edit's title.
+   - If `downloadUrl` is null on a `COMPLETED` export, call `exports_get_export`
+     once more; if it is still null, report that.
+   - If the link answers 403, it may have expired: call `exports_get_export`
+     once more for a fresh link; if that is refused too, report the failure
+     rather than retrying.
+5. With no `COMPLETED` export, or no working link after the retry (still null,
+   or refused again), share the edit's
+   `riversideUrl` from `platform_get_edit` so the user can export or download it
+   in the editor. Never construct a download URL from an export's `s3Key`.
 
 ## Transcripts: prose here, cut-grade elsewhere
 
