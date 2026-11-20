@@ -105,14 +105,15 @@ When the user wants the file, resolve the edit and its export as below:
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. `exports_list_edit_exports` for that edit. Take the newest `COMPLETED`
-   export and tell the user when it was made. If the newest is `PENDING`,
-   check it with `exports_get_export` a few times, about a minute apart, until
-   it is `COMPLETED` or `FAILED`; if it is still `PENDING` after that, say the
-   render is still running and go to step 5. If none is `COMPLETED`, report the
-   `FAILED` exports that are listed. If the list is
-   empty, say the result is inconclusive rather than that the edit was never
-   exported.
+3. `exports_list_edit_exports` for that edit. If the newest export is
+   `PENDING`, check it with `exports_get_export` a few times, about a minute
+   apart, until it is `COMPLETED` or `FAILED`. Then take the newest `COMPLETED`
+   export and tell the user when it was made. If the newest export is still
+   `PENDING`, say that render is still running and that the export you offer is
+   older, so it may not include later changes to the edit. If no export is
+   `COMPLETED`, report the `PENDING` or `FAILED` exports that are listed and go
+   to step 5. If the list is empty, say the result is inconclusive rather than
+   that the edit was never exported.
 4. `exports_get_export` for the `COMPLETED` export, then use its
    `export.downloadUrl`:
    - With a shell, download it: `curl -fsSL -o "<file>.mp4" "<downloadUrl>"`.
