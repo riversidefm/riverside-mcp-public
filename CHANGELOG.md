@@ -24,6 +24,22 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.10.0] - 2026-11-20
+
+Exports come with a download link (EB-1507).
+
+- **`exports_get_export` returns `downloadUrl`** for a `COMPLETED` export
+  (riversidefm/editing-service#1258): a signed HTTPS link that needs no auth
+  header, with `downloadUrlExpiresAt`, at most an hour out and sometimes
+  sooner. Both are null for `PENDING` and `FAILED` exports, and every call
+  mints a fresh link. `exports_list_edit_exports` still has no link.
+- **"Getting a rendered file" now ends in the file.** Content discovery picks
+  the newest `COMPLETED` export, polls a `PENDING` one, then downloads the link
+  with `curl` where there is a shell or hands it to the user where there is
+  not. A null link or a 403 gets one fresh `exports_get_export` call, then a
+  report. The edit's `riversideUrl` remains the fallback.
+- Building a URL from an export's `s3Key` is still forbidden.
+
 ## [0.9.0] - 2026-11-12
 
 Brings social-publishing level with what Riverside's own Marketer agent can do
