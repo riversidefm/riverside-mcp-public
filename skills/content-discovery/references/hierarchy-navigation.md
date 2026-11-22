@@ -118,20 +118,19 @@ When the user wants the file, resolve the edit and its export as below:
    that the edit was never exported.
 4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
    export, then use its `export.downloadUrl`:
-   - With a shell, download it: `curl -fsSL -o "<file>.mp4" "<downloadUrl>"`.
-     Use the extension the export's `s3Key` ends in (`.wav` or `.mp3` for an
-     audio export).
+   - With a shell, download it: `curl -fsSL -o "<name>.<ext>" "<downloadUrl>"`,
+     where `<ext>` is the extension the export's `s3Key` ends in (`mp4` for
+     video, `wav` or `mp3` for audio).
    - Without one (claude.ai, ChatGPT), give the user the link and say when it
      expires. Opening it saves the file under the edit's title.
-   - If `downloadUrl` is null on a `COMPLETED` export, make the same call with
-     `includeDownloadUrl: true` once more; if it is still null, report that.
-   - If the link answers 403, it may have expired: make the same call with
-     `includeDownloadUrl: true` once more for a fresh link; if that is refused
-     too, report the failure rather than retrying.
-5. With no `COMPLETED` export, or no working link after the retry (still null,
-   or refused again), share the edit's
-   `riversideUrl` from `platform_get_edit` so the user can export or download it
-   in the editor. Never construct a download URL from an export's `s3Key`.
+   - If `downloadUrl` is null on a `COMPLETED` export, or the link answers 403
+     (it may have expired), make the same call with `includeDownloadUrl: true`
+     once more. That is one extra call in total, shared by both cases: if it
+     does not give a working link, go to step 5 and do not call again.
+5. With no `COMPLETED` export, or no working link after the one retry, report
+   that and share the edit's `riversideUrl` from `platform_get_edit` so the user
+   can export or download it in the editor. Never construct a download URL from
+   an export's `s3Key`.
 
 ## Transcripts: prose here, cut-grade elsewhere
 
