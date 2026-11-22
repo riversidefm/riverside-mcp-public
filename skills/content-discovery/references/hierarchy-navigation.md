@@ -118,11 +118,17 @@ When the user wants the file, resolve the edit and its export as below:
    that the edit was never exported.
 4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
    export, then use its `export.downloadUrl`:
-   - With a shell, download it: `curl -fsSL -o "<name>.<ext>" "<downloadUrl>"`,
-     where `<ext>` is the extension the export's `s3Key` ends in (`mp4` for
-     video, `wav` or `mp3` for audio).
+   - With a shell, download it to a fixed name built only from server values:
+     `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. `<exportId>` is
+     the export's 24-hex-character id, and `<ext>` is the extension the
+     export's `s3Key` ends in (`mp4` for video, `wav` or `mp3` for audio); if
+     that extension is not only letters and digits, give the user the link
+     instead. Never put the edit title or any other user text into a shell
+     command: a title like `$(...)` runs as a command, even in double quotes.
+     Keep both arguments in single quotes; a signed URL has no single quote.
    - Without one (claude.ai, ChatGPT), give the user the link and say when it
-     expires. Opening it saves the file under the edit's title.
+     expires. Opening it in a browser saves the file under the edit's title
+     (the link sets Content-Disposition), so the shell never handles the title.
    - If `downloadUrl` is null on a `COMPLETED` export, or the link answers 403
      (it may have expired), make the same call with `includeDownloadUrl: true`
      once more. That is one extra call in total, shared by both cases: if it
