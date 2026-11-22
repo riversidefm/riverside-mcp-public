@@ -32,8 +32,8 @@ Which id crosses into another skill:
 - **`editId`** — one cut of one or more recordings. Social publishing consumes
   it as the `clipId`.
 - **`exportId`** — one rendered file. `exports_list_edit_exports` lists an
-  edit's exports. No tool returns a download link; send the user to the edit's
-  `riversideUrl` instead.
+  edit's exports. `exports_get_export` called with `includeDownloadUrl: true`
+  on a `COMPLETED` export returns a short-lived `downloadUrl` for the file.
 
 ## Where to read next
 
@@ -59,8 +59,9 @@ Only this table routes references — a reference never routes to another one.
   for "all my recordings"-style requests, and never carry a narrow scope
   captured in an earlier step into a request the user did not scope that way.
 - **Links come from the platform.** Studios, projects, recordings, and edits
-  each carry a `riversideUrl`. Return the one the server gave you; never
-  construct or guess a URL, and never build one from an export's `s3Key`.
+  each carry a `riversideUrl`, and `exports_get_export` returns an export's
+  `downloadUrl`. Return the one the server gave you; never construct or guess a
+  URL, and never build one from an export's `s3Key`.
 - **Preview links are opt-in.** `platform_get_recording` withholds the
   token-bearing `previewUrl` unless asked. Set `includePreviewUrl` only once the
   user has explicitly asked for a shareable preview, and read a null value as

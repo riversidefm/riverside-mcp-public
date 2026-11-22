@@ -81,10 +81,17 @@ their times and let the user choose.
 
 ## Getting a rendered file
 
-No tool returns a download link. `exports_create_export` renders an edit,
-`exports_list_edit_exports` lists an edit's exports newest first with each one's
-`status`, and `exports_get_export` reads one export by id. An export's `s3Key`
-is a storage key, not a URL.
+`exports_create_export` renders an edit, `exports_list_edit_exports` lists an
+edit's exports newest first with each one's `status`, and `exports_get_export`
+reads one export by id. Only `exports_get_export` returns a download link, and
+only when called with `includeDownloadUrl: true`: for a `COMPLETED` export,
+`export.downloadUrl` is then a signed HTTPS link that needs no auth header, and
+`export.downloadUrlExpiresAt` is when it stops working. That is at most an hour
+away and can be sooner, so go by the field, not by the hour. Without the flag,
+and while the export is `PENDING` or `FAILED`, both are null. Poll status
+without the flag, and ask for the link only once the user wants the file. Every
+call with the flag returns a fresh link; never save one to reuse later. An
+export's `s3Key` is a storage key, not a URL.
 
 The list comes back in one response, without pages, and leaves deleted exports
 out. It can omit older exports, so even a non-empty list may not be complete.
@@ -92,9 +99,7 @@ An empty list is inconclusive: an unknown edit id also returns an empty list.
 Never re-export only because the list is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
 an empty list.
 
-When the user wants the file, resolve the edit as below and give them its
-`riversideUrl` from `platform_get_edit` so they can export or download it in the
-editor:
+When the user wants the file, resolve the edit and its export as below:
 
 1. Resolve the recording, confirm its `status`, and capture its `projectId`.
 2. `platform_get_project` — recordings and edits are siblings under a project,
@@ -102,12 +107,39 @@ editor:
    mean with `platform_get_edit`. Continue only when exactly one matches. If
    several do, show their available identifying details and wait for the user
    to select the edit.
-3. `exports_list_edit_exports` for that edit. If a `COMPLETED` export is
-   listed, tell the user when it was made; otherwise report the `PENDING` or
-   `FAILED` exports that are listed. If the list is empty, say the result is
-   inconclusive rather than that the edit was never exported.
-4. Share that edit's `riversideUrl`. Do not construct a download URL from an
-   export's `s3Key`.
+3. `exports_list_edit_exports` for that edit. If the newest export is
+   `PENDING`, check it with `exports_get_export` (no flag) a few times, about a
+   minute apart, until it is `COMPLETED` or `FAILED`. Then take the newest `COMPLETED`
+   export and tell the user when it was made. If the newest export is still
+   `PENDING`, say that render is still running and that the export you offer is
+   older, so it may not include later changes to the edit. If no export is
+   `COMPLETED`, report the `PENDING` or `FAILED` exports that are listed and go
+   to step 5. If the list is empty, say the result is inconclusive rather than
+   that the edit was never exported.
+4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
+   export, then use its `export.downloadUrl`:
+   - With a shell, download it to a fixed name built only from server values:
+     `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. Before running
+     curl, check that the target path does not exist. If it does, try
+     `export-<exportId>-2.<ext>`, `-3`, and so on until you find an unused name,
+     checking each one, or ask the user before overwriting. `<exportId>` is
+     the export's 24-hex-character id, and `<ext>` is the extension the
+     export's `s3Key` ends in (`mp4` for video, `wav` or `mp3` for audio); if
+     that extension is not only letters and digits, give the user the link
+     instead. Never put the edit title or any other user text into a shell
+     command: a title like `$(...)` runs as a command, even in double quotes.
+     Keep both arguments in single quotes; a signed URL has no single quote.
+   - Without one (claude.ai, ChatGPT), give the user the link and say when it
+     expires. Opening it in a browser saves the file under the edit's title
+     (the link sets Content-Disposition), so the shell never handles the title.
+   - If `downloadUrl` is null on a `COMPLETED` export, or the link answers 403
+     (it may have expired), make the same call with `includeDownloadUrl: true`
+     once more. That is one extra call in total, shared by both cases: if it
+     does not give a working link, go to step 5 and do not call again.
+5. With no `COMPLETED` export, or no working link after the one retry, report
+   that and share the edit's `riversideUrl` from `platform_get_edit` so the user
+   can export or download it in the editor. Never construct a download URL from
+   an export's `s3Key`.
 
 ## Transcripts: prose here, cut-grade elsewhere
 
