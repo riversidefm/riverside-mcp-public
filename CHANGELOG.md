@@ -29,15 +29,18 @@ together.
 Exports come with a download link (EB-1507).
 
 - **`exports_get_export` returns `downloadUrl`** for a `COMPLETED` export
-  (riversidefm/editing-service#1258): a signed HTTPS link that needs no auth
-  header, with `downloadUrlExpiresAt`, at most an hour out and sometimes
-  sooner. Both are null for `PENDING` and `FAILED` exports, and every call
-  mints a fresh link. `exports_list_edit_exports` still has no link.
+  when called with `includeDownloadUrl: true` (riversidefm/editing-service#1258,
+  opt-in since riversidefm/editing-service#1261): a signed HTTPS link that
+  needs no auth header, with `downloadUrlExpiresAt`, at most an hour out and
+  sometimes sooner. Both are null without the flag and for `PENDING` and
+  `FAILED` exports, and every call with the flag mints a fresh link.
+  `exports_list_edit_exports` still has no link.
 - **"Getting a rendered file" now ends in the file.** Content discovery picks
-  the newest `COMPLETED` export, polls a `PENDING` one, then downloads the link
-  with `curl` where there is a shell or hands it to the user where there is
-  not. A null link or a 403 gets one fresh `exports_get_export` call, then a
-  report. The edit's `riversideUrl` remains the fallback.
+  the newest `COMPLETED` export and polls a `PENDING` one without the flag. It
+  then asks for the link once, and downloads it with `curl` where there is a
+  shell or hands it to the user where there is not. A null link or a 403 gets
+  one more call with the flag, then a report. The edit's `riversideUrl` remains
+  the fallback.
 - Building a URL from an export's `s3Key` is still forbidden.
 
 ## [0.9.0] - 2026-11-12

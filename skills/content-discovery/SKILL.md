@@ -32,8 +32,8 @@ Which id crosses into another skill:
 - **`editId`** — one cut of one or more recordings. Social publishing consumes
   it as the `clipId`.
 - **`exportId`** — one rendered file. `exports_list_edit_exports` lists an
-  edit's exports. `exports_get_export` on a `COMPLETED` export returns a
-  short-lived `downloadUrl` for the file.
+  edit's exports. `exports_get_export` called with `includeDownloadUrl: true`
+  on a `COMPLETED` export returns a short-lived `downloadUrl` for the file.
 
 ## Where to read next
 

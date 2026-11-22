@@ -74,8 +74,10 @@
 #
 # NOTED: 2026-11-20 — `exports_get_export` now returns `downloadUrl` and
 #   `downloadUrlExpiresAt` for a COMPLETED export (riversidefm/editing-service#1258,
-#   EB-1507). Confirmed by an authenticated tools/call on production. No tool
-#   added or renamed; the list below is unchanged.
+#   EB-1507). Confirmed by an authenticated tools/call on production. Since
+#   riversidefm/editing-service#1261 it returns them only when called with
+#   `includeDownloadUrl: true`. No tool added or renamed; the list below is
+#   unchanged.
 
 editing_add_lower_third
 editing_add_text_overlay
