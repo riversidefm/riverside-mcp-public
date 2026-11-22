@@ -119,9 +119,10 @@ When the user wants the file, resolve the edit and its export as below:
 4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
    export, then use its `export.downloadUrl`:
    - With a shell, download it to a fixed name built only from server values:
-     `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. curl overwrites
-     an existing file, so if `export-<exportId>.<ext>` already exists, ask the
-     user before overwriting it or save as `export-<exportId>-2.<ext>`. `<exportId>` is
+     `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. Before running
+     curl, check that the target path does not exist. If it does, try
+     `export-<exportId>-2.<ext>`, `-3`, and so on until you find an unused name,
+     checking each one, or ask the user before overwriting. `<exportId>` is
      the export's 24-hex-character id, and `<ext>` is the extension the
      export's `s3Key` ends in (`mp4` for video, `wav` or `mp3` for audio); if
      that extension is not only letters and digits, give the user the link
