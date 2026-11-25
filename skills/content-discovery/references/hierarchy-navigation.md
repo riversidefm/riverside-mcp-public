@@ -93,6 +93,12 @@ without the flag, and ask for the link only once the user wants the file. Every
 call with the flag returns a fresh link; never save one to reuse later. An
 export's `s3Key` is a storage key, not a URL.
 
+The same call also returns `export.thumbnailDownloadUrl` (expiring at
+`thumbnailDownloadUrlExpiresAt`): a link of the same kind to the export's
+thumbnail, a 640 px wide JPEG frame of the video, for use as a cover elsewhere.
+It is null whenever `downloadUrl` is, and for an export with no thumbnail:
+every audio export and some older video exports.
+
 The list comes back in one response, without pages, and leaves deleted exports
 out. It can omit older exports, so even a non-empty list may not be complete.
 An empty list is inconclusive: an unknown edit id also returns an empty list.
@@ -132,7 +138,13 @@ When the user wants the file, resolve the edit and its export as below:
    - Without one (claude.ai, ChatGPT), give the user the link and say when it
      expires. Opening it in a browser saves the file under the edit's title
      (the link sets Content-Disposition), so the shell never handles the title.
-   - If `downloadUrl` is null on a `COMPLETED` export, or the link answers 403
+   - When the user also wants the thumbnail, handle `thumbnailDownloadUrl`
+     the same way. With a shell, run
+     `curl -fsSL -o 'export-<exportId>-thumbnail.jpg' '<thumbnailDownloadUrl>'`
+     after the same unused-name check; without one, give the user the link.
+     Null next to a set `downloadUrl` means the export has no thumbnail: say
+     so, and do not call again for it.
+   - If `downloadUrl` is null on a `COMPLETED` export, or a link answers 403
      (it may have expired), make the same call with `includeDownloadUrl: true`
      once more. That is one extra call in total, shared by both cases: if it
      does not give a working link, go to step 5 and do not call again.

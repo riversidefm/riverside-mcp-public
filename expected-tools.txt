@@ -78,6 +78,12 @@
 #   riversidefm/editing-service#1261 it returns them only when called with
 #   `includeDownloadUrl: true`. No tool added or renamed; the list below is
 #   unchanged.
+#
+# NOTED: 2026-11-25 — with `includeDownloadUrl: true`, `exports_get_export` also
+#   returns `thumbnailDownloadUrl` and `thumbnailDownloadUrlExpiresAt`
+#   (riversidefm/editing-service#1329, AGT-1930). Confirmed by an authenticated
+#   tools/call on production. No tool added or renamed; the list below is
+#   unchanged.
 
 editing_add_lower_third
 editing_add_text_overlay
