@@ -95,7 +95,7 @@ export's `s3Key` is a storage key, not a URL.
 
 The same call also returns `export.thumbnailDownloadUrl` (expiring at
 `thumbnailDownloadUrlExpiresAt`): a link of the same kind to the export's
-thumbnail, a 640 px wide JPEG frame of the video, for use as a cover elsewhere.
+thumbnail, a 640 px wide JPEG video frame.
 It is null whenever `downloadUrl` is, and for an export with no thumbnail:
 every audio export and some older video exports.
 
@@ -105,7 +105,7 @@ An empty list is inconclusive: an unknown edit id also returns an empty list.
 Never re-export only because the list is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
 an empty list.
 
-When the user wants the file, resolve the edit and its export as below:
+When the user wants the file or its thumbnail, resolve the edit and its export:
 
 1. Resolve the recording, confirm its `status`, and capture its `projectId`.
 2. `platform_get_project` — recordings and edits are siblings under a project,
@@ -123,7 +123,7 @@ When the user wants the file, resolve the edit and its export as below:
    to step 5. If the list is empty, say the result is inconclusive rather than
    that the edit was never exported.
 4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
-   export, then use its `export.downloadUrl`:
+   export. If the user wants the file, use its `export.downloadUrl`:
    - With a shell, download it to a fixed name built only from server values:
      `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. Before running
      curl, check that the target path does not exist. If it does, try
@@ -138,7 +138,7 @@ When the user wants the file, resolve the edit and its export as below:
    - Without one (claude.ai, ChatGPT), give the user the link and say when it
      expires. Opening it in a browser saves the file under the edit's title
      (the link sets Content-Disposition), so the shell never handles the title.
-   - When the user also wants the thumbnail, handle `thumbnailDownloadUrl`
+   - When the user wants the thumbnail, handle `thumbnailDownloadUrl`
      the same way. With a shell, run
      `curl -fsSL -o 'export-<exportId>-thumbnail.jpg' '<thumbnailDownloadUrl>'`
      after the same unused-name check; without one, give the user the link.

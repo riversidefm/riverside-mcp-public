@@ -34,7 +34,7 @@ Which id crosses into another skill:
 - **`exportId`** — one rendered file. `exports_list_edit_exports` lists an
   edit's exports. `exports_get_export` called with `includeDownloadUrl: true`
   on a `COMPLETED` export returns a short-lived `downloadUrl` for the file and,
-  for a video export, `thumbnailDownloadUrl` for its thumbnail.
+  for most video exports, `thumbnailDownloadUrl` for its thumbnail.
 
 ## Where to read next
 
