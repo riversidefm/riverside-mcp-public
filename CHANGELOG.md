@@ -24,6 +24,21 @@ Also keep `.cursor-plugin/plugin.json`'s `"version"` in sync with the Claude
 manifest — the two packages ship from the same repo and are expected to move
 together.
 
+## [0.11.0] - 2026-11-25
+
+Exports come with a thumbnail link too (AGT-1930).
+
+- **`exports_get_export` returns `thumbnailDownloadUrl`** and
+  `thumbnailDownloadUrlExpiresAt` next to `downloadUrl` when called with
+  `includeDownloadUrl: true` (riversidefm/editing-service#1329): a signed link
+  of the same kind to the export's thumbnail, a JPEG frame of the video
+  (640 px wide), saved under the edit title. Null whenever `downloadUrl` is,
+  and when the export has no thumbnail: always for an audio export, and for
+  some older video exports.
+- **Content discovery hands the thumbnail over on request**, downloading it to
+  `export-<exportId>-thumbnail.jpg` where there is a shell. A null thumbnail
+  next to a working file link is reported, not retried.
+
 ## [0.10.0] - 2026-11-20
 
 Exports come with a download link (EB-1507).

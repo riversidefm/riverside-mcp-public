@@ -89,9 +89,15 @@ only when called with `includeDownloadUrl: true`: for a `COMPLETED` export,
 `export.downloadUrlExpiresAt` is when it stops working. That is at most an hour
 away and can be sooner, so go by the field, not by the hour. Without the flag,
 and while the export is `PENDING` or `FAILED`, both are null. Poll status
-without the flag, and ask for the link only once the user wants the file. Every
-call with the flag returns a fresh link; never save one to reuse later. An
-export's `s3Key` is a storage key, not a URL.
+without the flag, and ask for the link only once the user wants the file or its
+thumbnail. Every call with the flag returns a fresh link; never save one to
+reuse later. An export's `s3Key` is a storage key, not a URL.
+
+The same call also returns `export.thumbnailDownloadUrl` (expiring at
+`thumbnailDownloadUrlExpiresAt`): a link of the same kind to the export's
+thumbnail, a 640 px wide JPEG video frame.
+It is null whenever `downloadUrl` is, and for an export with no thumbnail:
+every audio export and some older video exports.
 
 The list comes back in one response, without pages, and leaves deleted exports
 out. It can omit older exports, so even a non-empty list may not be complete.
@@ -99,7 +105,7 @@ An empty list is inconclusive: an unknown edit id also returns an empty list.
 Never re-export only because the list is empty. A caller without access to the edit gets an `UNAUTHORIZED` error, not
 an empty list.
 
-When the user wants the file, resolve the edit and its export as below:
+When the user wants the file or its thumbnail, resolve the edit and its export:
 
 1. Resolve the recording, confirm its `status`, and capture its `projectId`.
 2. `platform_get_project` — recordings and edits are siblings under a project,
@@ -117,8 +123,9 @@ When the user wants the file, resolve the edit and its export as below:
    to step 5. If the list is empty, say the result is inconclusive rather than
    that the edit was never exported.
 4. `exports_get_export` with `includeDownloadUrl: true` for the `COMPLETED`
-   export, then use its `export.downloadUrl`:
-   - With a shell, download it to a fixed name built only from server values:
+   export, then use the link for what the user wants:
+   - For the file (`downloadUrl`), with a shell, download it to a fixed name
+     built only from server values:
      `curl -fsSL -o 'export-<exportId>.<ext>' '<downloadUrl>'`. Before running
      curl, check that the target path does not exist. If it does, try
      `export-<exportId>-2.<ext>`, `-3`, and so on until you find an unused name,
@@ -132,7 +139,13 @@ When the user wants the file, resolve the edit and its export as below:
    - Without one (claude.ai, ChatGPT), give the user the link and say when it
      expires. Opening it in a browser saves the file under the edit's title
      (the link sets Content-Disposition), so the shell never handles the title.
-   - If `downloadUrl` is null on a `COMPLETED` export, or the link answers 403
+   - For the thumbnail, handle `thumbnailDownloadUrl` the same way. With a
+     shell, run
+     `curl -fsSL -o 'export-<exportId>-thumbnail.jpg' '<thumbnailDownloadUrl>'`
+     after the same unused-name check; without one, give the user the link.
+     Null next to a set `downloadUrl` means the export has no thumbnail: say
+     so, and do not call again for it.
+   - If `downloadUrl` is null on a `COMPLETED` export, or a link answers 403
      (it may have expired), make the same call with `includeDownloadUrl: true`
      once more. That is one extra call in total, shared by both cases: if it
      does not give a working link, go to step 5 and do not call again.
